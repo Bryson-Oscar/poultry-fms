@@ -1,0 +1,485 @@
+[debug] [2026-09-28T14:04:35.092Z] ----------------------------------------------------------------------
+[debug] [2026-09-28T14:04:35.096Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\THINKPAD\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting --project poultry-fms
+[debug] [2026-09-28T14:04:35.097Z] CLI Version:   15.17.0
+[debug] [2026-09-28T14:04:35.097Z] Platform:      win32
+[debug] [2026-09-28T14:04:35.097Z] Node Version:  v22.22.0
+[debug] [2026-09-28T14:04:35.097Z] Time:          Mon Sep 28 2026 17:04:35 GMT+0300 (East Africa Time)
+[debug] [2026-09-28T14:04:35.098Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-09-28T14:04:36.803Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-09-28T14:04:36.804Z] > authorizing via signed-in user (brysonosc20@gmail.com)
+[debug] [2026-09-28T14:04:36.804Z] [iam] checking project poultry-fms for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-09-28T14:04:36.806Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:04:36.806Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:04:36.807Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions [none]
+[debug] [2026-09-28T14:04:36.807Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions  x-goog-user-project=poultry-fms
+[debug] [2026-09-28T14:04:36.807Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-09-28T14:04:38.201Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions 200
+[debug] [2026-09-28T14:04:38.201Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-09-28T14:04:38.202Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:04:38.202Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:04:38.202Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/poultry-fms [none]
+[debug] [2026-09-28T14:04:39.936Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/poultry-fms 200
+[debug] [2026-09-28T14:04:39.936Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/poultry-fms {"projectId":"poultry-fms","projectNumber":"214482975515","displayName":"poultry-fms","name":"projects/poultry-fms","resources":{"hostingSite":"poultry-fms"},"state":"ACTIVE","labels":{"firebase":"enabled","firebase/storage-default-bucket":"created"},"etag":"1_d6d17ec6-93e8-4d0a-86bc-2495c05c0d89"}
+[debug] [2026-09-28T14:04:43.720Z] defaultcredentials: writing to file C:\Users\THINKPAD\AppData\Roaming\firebase\brysonosc20_gmail_com_application_default_credentials.json
+[debug] [2026-09-28T14:04:43.722Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:04:43.722Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:04:43.722Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites pageToken=&pageSize=10
+[debug] [2026-09-28T14:04:45.718Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites 200
+[debug] [2026-09-28T14:04:45.718Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites {"sites":[{"name":"projects/poultry-fms/sites/poultry-fms","defaultUrl":"https://poultry-fms.web.app","appId":"1:214482975515:web:cc97a766604016978cf1be","type":"DEFAULT_SITE"}]}
+[debug] [2026-09-28T14:04:45.719Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:04:45.719Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:04:45.719Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:214482975515:web:cc97a766604016978cf1be/config [none]
+[debug] [2026-09-28T14:04:47.151Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:214482975515:web:cc97a766604016978cf1be/config 200
+[debug] [2026-09-28T14:04:47.151Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/-/webApps/1:214482975515:web:cc97a766604016978cf1be/config {"projectId":"poultry-fms","appId":"1:214482975515:web:cc97a766604016978cf1be","storageBucket":"poultry-fms.firebasestorage.app","apiKey":"AIzaSyCyorf6PmvohEtYNs0a3IiBYvPOU6q4m74","authDomain":"poultry-fms.firebaseapp.com","messagingSenderId":"214482975515","measurementId":"G-SYC4056S0N","projectNumber":"214482975515","version":"2"}
+[info] 
+   Thank you for trying our early preview of Next.js support on Firebase Hosting.
+   During the preview, support is best-effort and breaking changes can be expected. Proceed with caution.
+   The integration is known to work with Next.js version 12 - 16.0. You may encounter errors.
+
+   Documentation: https://firebase.google.com/docs/hosting/frameworks/nextjs
+   File a bug: https://github.com/firebase/firebase-tools/issues/new?template=bug_report.md
+   Submit a feature request: https://github.com/firebase/firebase-tools/issues/new?template=feature_request.md
+
+   We'd love to learn from you. Express your interest in helping us shape the future of Firebase Hosting: https://goo.gle/41enW5X
+
+[debug] [2026-09-28T14:04:55.903Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:04:55.903Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:04:55.904Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites/poultry-fms [none]
+[debug] [2026-09-28T14:04:57.985Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites/poultry-fms 200
+[debug] [2026-09-28T14:04:57.985Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites/poultry-fms {"name":"projects/poultry-fms/sites/poultry-fms","defaultUrl":"https://poultry-fms.web.app","appId":"1:214482975515:web:cc97a766604016978cf1be","type":"DEFAULT_SITE"}
+[info] ▲ Next.js 16.3.6 (Turbopack)
+
+[info] - Environments: .env.local, .env
+
+[info] ✓ Running next.config.ts took 67ms
+
+[info] 
+
+[info]   Creating an optimized production build ...
+
+[info] ✓ Compiled successfully in 1573ms
+
+[info]   Running TypeScript ...
+
+[info]   Finished TypeScript in 3.6s ...
+
+[info]   Collecting page data using 11 workers ...
+
+[info]   Generating static pages using 11 workers (0/9) ...
+
+[info]   Generating static pages using 11 workers (2/9) 
+
+[info]   Generating static pages using 11 workers (4/9) 
+
+[info]   Generating static pages using 11 workers (6/9) 
+
+[info] ✓ Generating static pages using 11 workers (9/9) in 460ms
+
+[info]   Finalizing page optimization ...
+
+[info] 
+
+[info] Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /auth
+├ ƒ /farm/[farmId]
+├ ƒ /farm/[farmId]/finance
+├ ƒ /farm/[farmId]/inventory
+├ ƒ /flock/[farmId]/[houseId]/[flockId]
+├ ○ /icon.svg
+├ ○ /manifest.webmanifest
+├ ○ /profile
+└ ○ /upgrade
+
+
+
+[info] ○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+[info] Building a Cloud Function to run this application. This is needed due to:
+[info]  • non-static component /farm/[farmId]/finance/page
+[info]  • non-static component /farm/[farmId]/inventory/page
+[info]  • non-static component /farm/[farmId]/page
+[info]  • non-static component /flock/[farmId]/[houseId]/[flockId]/page
+[info] 
+[debug] [2026-09-28T14:05:19.226Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:19.226Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:19.226Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites/poultry-fms [none]
+[debug] [2026-09-28T14:05:21.164Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites/poultry-fms 200
+[debug] [2026-09-28T14:05:21.164Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites/poultry-fms {"name":"projects/poultry-fms/sites/poultry-fms","defaultUrl":"https://poultry-fms.web.app","appId":"1:214482975515:web:cc97a766604016978cf1be","type":"DEFAULT_SITE"}
+[debug] [2026-09-28T14:05:32.499Z] [web frameworks] effective firebase.json:  {
+  "hosting": [
+    {
+      "source": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/login",
+          "destination": "/auth",
+          "type": 302
+        },
+        {
+          "source": "/ovocore",
+          "destination": "/",
+          "type": 302
+        }
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        },
+        {
+          "source": "**",
+          "function": {
+            "functionId": "ssrpoultryfms",
+            "region": "us-central1",
+            "pinTag": true
+          }
+        }
+      ],
+      "site": "poultry-fms",
+      "headers": [
+        {
+          "source": "/_global-error",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/_global-error/layout,_N_T_/_global-error/page,_N_T_/_global-error"
+            }
+          ]
+        },
+        {
+          "source": "/_not-found",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/_not-found/layout,_N_T_/_not-found/page,_N_T_/_not-found"
+            }
+          ]
+        },
+        {
+          "source": "/favicon.ico",
+          "headers": [
+            {
+              "key": "cache-control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "content-type",
+              "value": "image/x-icon"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/favicon.ico/layout,_N_T_/favicon.ico/route,_N_T_/favicon.ico"
+            }
+          ]
+        },
+        {
+          "source": "/auth",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/auth/layout,_N_T_/auth/page,_N_T_/auth"
+            }
+          ]
+        },
+        {
+          "source": "/icon.svg",
+          "headers": [
+            {
+              "key": "cache-control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "content-type",
+              "value": "image/svg+xml"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/icon.svg/layout,_N_T_/icon.svg/route,_N_T_/icon.svg"
+            }
+          ]
+        },
+        {
+          "source": "/manifest.webmanifest",
+          "headers": [
+            {
+              "key": "cache-control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "content-type",
+              "value": "application/manifest+json"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/manifest.webmanifest/layout,_N_T_/manifest.webmanifest/route,_N_T_/manifest.webmanifest"
+            }
+          ]
+        },
+        {
+          "source": "/profile",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/profile/layout,_N_T_/profile/page,_N_T_/profile"
+            }
+          ]
+        },
+        {
+          "source": "/upgrade",
+          "headers": [
+            {
+              "key": "x-nextjs-stale-time",
+              "value": "300"
+            },
+            {
+              "key": "x-nextjs-prerender",
+              "value": "1"
+            },
+            {
+              "key": "x-next-cache-tags",
+              "value": "_N_T_/layout,_N_T_/upgrade/layout,_N_T_/upgrade/page,_N_T_/upgrade"
+            }
+          ]
+        },
+        {
+          "source": "**/*.[jt]s",
+          "headers": [
+            {
+              "key": "Set-Cookie",
+              "value": "__FIREBASE_DEFAULTS__=eyJjb25maWciOnsicHJvamVjdElkIjoicG91bHRyeS1mbXMiLCJhcHBJZCI6IjE6MjE0NDgyOTc1NTE1OndlYjpjYzk3YTc2NjYwNDAxNjk3OGNmMWJlIiwic3RvcmFnZUJ1Y2tldCI6InBvdWx0cnktZm1zLmZpcmViYXNlc3RvcmFnZS5hcHAiLCJhcGlLZXkiOiJBSXphU3lDeW9yZjZQbXZvaEV0WU5zMGEzSWlCWXZQT1U2cTRtNzQiLCJhdXRoRG9tYWluIjoicG91bHRyeS1mbXMuZmlyZWJhc2VhcHAuY29tIiwibWVzc2FnaW5nU2VuZGVySWQiOiIyMTQ0ODI5NzU1MTUiLCJtZWFzdXJlbWVudElkIjoiRy1TWUM0MDU2UzBOIiwicHJvamVjdE51bWJlciI6IjIxNDQ4Mjk3NTUxNSIsInZlcnNpb24iOiIyIn0sIl9hdXRoVG9rZW5TeW5jVVJMIjoiL19fc2Vzc2lvbiJ9; SameSite=Strict; Expires=2028-08-23T00:45:32.499Z; Path=/;"
+            }
+          ]
+        }
+      ],
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "public": ".firebase\\poultry-fms\\hosting",
+      "webFramework": "next_ssr"
+    }
+  ],
+  "functions": [
+    {
+      "source": ".firebase\\poultry-fms\\functions",
+      "codebase": "firebase-frameworks-poultry-fms"
+    }
+  ]
+}
+[debug] [2026-09-28T14:05:32.500Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-09-28T14:05:32.500Z] > authorizing via signed-in user (brysonosc20@gmail.com)
+[debug] [2026-09-28T14:05:32.500Z] [iam] checking project poultry-fms for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2026-09-28T14:05:32.500Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:32.500Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:32.500Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions [none]
+[debug] [2026-09-28T14:05:32.500Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions  x-goog-user-project=poultry-fms
+[debug] [2026-09-28T14:05:32.500Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2026-09-28T14:05:33.722Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions 200
+[debug] [2026-09-28T14:05:33.722Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2026-09-28T14:05:33.723Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:33.723Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:33.723Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/poultry-fms/locations/-/functions [none]
+[debug] [2026-09-28T14:05:35.183Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/poultry-fms/locations/-/functions 200
+[debug] [2026-09-28T14:05:35.183Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/poultry-fms/locations/-/functions {}
+[debug] [2026-09-28T14:05:35.184Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:35.184Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:35.185Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/poultry-fms/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2026-09-28T14:05:36.446Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/poultry-fms/locations/-/functions 200
+[debug] [2026-09-28T14:05:36.446Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/poultry-fms/locations/-/functions {"functions":[{"name":"projects/poultry-fms/locations/us-central1/functions/ssrpoultryfms","buildConfig":{"build":"projects/214482975515/locations/us-central1/builds/0ad11e68-4267-495e-ad34-097775e1924a","runtime":"nodejs22","entryPoint":"ssrpoultryfms","source":{"storageSource":{"bucket":"gcf-v2-sources-214482975515-us-central1","object":"ssrpoultryfms/function-source.zip","generation":"1790446072936725"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"dockerRepository":"projects/poultry-fms/locations/us-central1/repositories/gcf-artifacts","sourceProvenance":{"resolvedStorageSource":{"bucket":"gcf-v2-sources-214482975515-us-central1","object":"ssrpoultryfms/function-source.zip","generation":"1790446072936725"}},"dockerRegistry":"ARTIFACT_REGISTRY","serviceAccount":"projects/poultry-fms/serviceAccounts/214482975515-compute@developer.gserviceaccount.com","automaticUpdatePolicy":{}},"serviceConfig":{"service":"projects/poultry-fms/locations/us-central1/services/ssrpoultryfms","timeoutSeconds":60,"environmentVariables":{"GEMINI_API_KEY":"AIzaSyAI23CqNoToIIKlcs0eUffHxnjSDTSw5Xc","NEXT_PUBLIC_FIREBASE_API_KEY":"AIzaSyCyorf6PmvohEtYNs0a3IiBYvPOU6q4m74","NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN":"poultry-fms.firebaseapp.com","NEXT_PUBLIC_FIREBASE_PROJECT_ID":"poultry-fms","NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET":"poultry-fms.firebasestorage.app","NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID":"214482975515","NEXT_PUBLIC_FIREBASE_APP_ID":"1:214482975515:web:cc97a766604016978cf1be","SDXL_API_KEY":"49a47eab560f44a183e68ee15bd0d778","SERPER_API_KEY":"65371c6215e315826405a3fcdf12e3930c0e1477","DATABASE_URL":"postgres://paperclip:paperclip@localhost:5432/paperclip","SERVE_UI":"false","ADMIN_FIREBASE_CLIENT_EMAIL":"firebase-adminsdk-et3bo@bryson-oscar-portfolio.iam.gserviceaccount.com","ADMIN_FIREBASE_PRIVATE_KEY_ID":"a525fdb9417fbd6bb13c5664b106c8976ae4cb6e","ADMIN_FIREBASE_PRIVATE_KEY":"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJY70OLOAA/UPi\n11KdwcBgKmtMLP3Or9eHUCrYNowetXzB1ydBYJTu5/rZChST1OspvBPZXrJDntJX\nHQPmd4cda/62XJVF/JThEDaL6LoT7jmqXH6Xrpi3EpECH46kxFzpEgK9xFyQC88H\n4bWVA0TuJMm2fg7bQkDOnhcVx8YM/OO+Aa5qJixYJqEUUIv4F1LOjq1RTZY+vis4\np/vgmAHxcjl9Emh8EGWkSq/Sj0LHu3fnA8tBOKX7oRgGlSH/d4aQXj5sRudBOYxS\nIr3x3+3R9JlrZJYJg+ULkVSjR2E7bp/AsaoTVeUYwydsWy/cSWp3QcYo/kTfenE4\nXL84f82zAgMBAAECggEAYgvDVpvlYMXs34rqJ3DVOlxciaUb2h0E5tVSTppb5HWC\nLBMWAv/E8n0RRMpiE0jlRpfQ6BJw4nf3ur6fD/ygVOQniVwQtpaOWvZcQAhJU3u3\nKmhGn406v2J0I57+gNwyyavhlsb7M4v0OseZ8la5n+FcLRM5I2khiRYxcgKlOtuk\nn41/0hX0cxw9XnOV2aYaA/OPYajrgflC1PvewseY/HT1+Cy9ZsElsFm0SDf7cOD8\nGmfhvHqme6CXOmBH+cLic17VBdEFcoJmKColCiug1JETzJ7Q9M8ineTr7k65+GeQ\nzc9HVHEsqYavwtYZ42uKj8+EXVMWu+UFhHZPOEKZiQKBgQDugvDlxYCZgEfnDUWE\nXrTCmOsfp3jNFNpUtLtbgcQ2lClo4Q0cl8KAfr6dxQTmk9oXMurdybsabB7b6oN2\nbkSZiOzdnzwmgnwvaXu/RvTdAi18wjkKMyq9Ykmj30DqT6Hdr5/y6Cf4NLmgzPga\nPvqxbt3a2BFx+JFqtSQa6OjsiQKBgQDYJ/0ktRzYh8Q2nz16ioetrueT1OgZ1ANO\ntWQoYfQeY/r88ieZnnSvVV0cvJoTqfAb4yami2340lTV1s57qbIUaPxSKjzq2Qy/\n4q85p0pP3L+YViuwpuB3hblNyWREtZbSo92O2FdgrOvfeFN2AxC96IAg02L8D/jh\nZnh7oKGxWwKBgQCVcTfNUBWGmGj07UzcZpatwzC3MbCwFtvB7UfjSwiNBgJ4M2KK\nws/cwQ1gPz0V2BfzJzUf6DEymgIv2t2qC+cxqCh5qDcBDgsPjfE6ZRQxkha8L9mb\neXnTFc18PvsmlOSfyVXX1fyNOUQB68ucbk+XcxbQ80bi+VLr4DmSHtMquQKBgFOx\nUAuJcIzKLIe1qlkrEBOImDOeCOwPMeSkyQ31t06ZCZIstHZ/atCEbdP1lnasosI5\ndjqf28murphJXpN1BfVvHNs3bXTE63HUdGIPSu+XGjwCiVIRmvHMPg5HPuJ3qNkQ\nB3YKf/J3obBZ537W+wF85zdOgZH1ITksstOzQ0fnAoGABIDMjjbfWTnytsxdcKzM\nwlIdsb3zStP8JjsrNdlKSIrBJtXAZtRwyQ6gWISTLkWoIKLDNG2gY3If6WjhIqW8\nREGqrR0cm3YYV/qOr8clya6yPYMHgILyeqYbf1Jxnh48Kl0u/PRa0KZXDe4mSeva\n3rsbDKW7lbVt+0f2zVLnOW4=\n-----END PRIVATE KEY-----\n","VERCEL_URL":"poultry-fms.web.app","__FIREBASE_FRAMEWORKS_ENTRY__":"next.js","__FIREBASE_DEFAULTS__":"{\"config\":{\"projectId\":\"poultry-fms\",\"appId\":\"1:214482975515:web:cc97a766604016978cf1be\",\"storageBucket\":\"poultry-fms.firebasestorage.app\",\"apiKey\":\"AIzaSyCyorf6PmvohEtYNs0a3IiBYvPOU6q4m74\",\"authDomain\":\"poultry-fms.firebaseapp.com\",\"messagingSenderId\":\"214482975515\",\"measurementId\":\"G-SYC4056S0N\",\"projectNumber\":\"214482975515\",\"version\":\"2\"},\"_authTokenSyncURL\":\"/__session\"}","FIREBASE_CONFIG":"{\"projectId\":\"poultry-fms\",\"storageBucket\":\"poultry-fms.firebasestorage.app\"}","GCLOUD_PROJECT":"poultry-fms","EVENTARC_CLOUD_EVENT_SOURCE":"projects/poultry-fms/locations/us-central1/services/ssrpoultryfms","FUNCTION_TARGET":"ssrpoultryfms","LOG_EXECUTION_ID":"true"},"maxInstanceCount":20,"ingressSettings":"ALLOW_ALL","uri":"https://ssrpoultryfms-ygicemu2ra-uc.a.run.app","serviceAccountEmail":"214482975515-compute@developer.gserviceaccount.com","availableMemory":"256Mi","allTrafficOnLatestRevision":true,"revision":"ssrpoultryfms-00002-buq","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"state":"ACTIVE","updateTime":"2026-09-26T18:12:34.088694653Z","labels":{"deployment-tool":"cli-firebase","firebase-functions-codebase":"firebase-frameworks-poultry-fms","firebase-functions-hash":"341e402299dad6f0f712ce4ff41bead0a091a17d"},"environment":"GEN_2","url":"https://us-central1-poultry-fms.cloudfunctions.net/ssrpoultryfms","createTime":"2026-09-26T17:55:56.113201983Z","satisfiesPzi":true}]}
+[info] i  hosting: The following function(s) are pinned to site poultry-fms and will be deployed as well: ssrpoultryfms 
+[info] 
+[info] === Deploying to 'poultry-fms'...
+[info] 
+[info] i  deploying functions, hosting 
+[debug] [2026-09-28T14:05:36.454Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:36.455Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:36.455Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms [none]
+[debug] [2026-09-28T14:05:36.922Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms 200
+[debug] [2026-09-28T14:05:36.922Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms {"projectNumber":"214482975515","projectId":"poultry-fms","lifecycleState":"ACTIVE","name":"poultry-fms","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-09-26T16:33:55.194Z"}
+[info] i  functions: preparing codebase firebase-frameworks-poultry-fms for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2026-09-28T14:05:36.932Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:36.932Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:36.933Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/poultry-fms/adminSdkConfig [none]
+[debug] [2026-09-28T14:05:38.343Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/poultry-fms/adminSdkConfig 200
+[debug] [2026-09-28T14:05:38.343Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/poultry-fms/adminSdkConfig {"projectId":"poultry-fms","storageBucket":"poultry-fms.firebasestorage.app"}
+[debug] [2026-09-28T14:05:38.344Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:38.345Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:38.345Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/poultry-fms/configs [none]
+[debug] [2026-09-28T14:05:39.087Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/poultry-fms/configs 200
+[debug] [2026-09-28T14:05:39.087Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/poultry-fms/configs {}
+[debug] [2026-09-28T14:05:39.090Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[warn] !  functions: Please note that there will be breaking changes when you upgrade. 
+[debug] [2026-09-28T14:05:41.418Z] > [functions] package.json contents: {
+  "name": "ovocore-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.20",
+    "@radix-ui/react-checkbox": "^1.3.11",
+    "@radix-ui/react-collapsible": "^1.1.20",
+    "@radix-ui/react-dialog": "^1.1.23",
+    "@radix-ui/react-dropdown-menu": "^2.1.24",
+    "@radix-ui/react-label": "^2.1.15",
+    "@radix-ui/react-popover": "^1.1.23",
+    "@radix-ui/react-progress": "^1.1.16",
+    "@radix-ui/react-radio-group": "^1.4.7",
+    "@radix-ui/react-scroll-area": "^1.2.18",
+    "@radix-ui/react-select": "^2.3.7",
+    "@radix-ui/react-slider": "^1.4.7",
+    "@radix-ui/react-slot": "^1.3.3",
+    "@radix-ui/react-switch": "^1.3.7",
+    "@radix-ui/react-tabs": "^1.1.21",
+    "@radix-ui/react-toast": "^1.2.23",
+    "canvas-confetti": "^1.9.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "date-fns": "^4.4.0",
+    "embla-carousel-react": "^8.6.0",
+    "firebase": "^12.19.0",
+    "firebase-admin": "^13.6.0",
+    "framer-motion": "^13.4.4",
+    "idb-keyval": "^6.3.0",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
+    "lucide-react": "^1.48.0",
+    "next": "16.3.6",
+    "react": "19.2.8",
+    "react-day-picker": "^10.0.1",
+    "react-dom": "19.2.8",
+    "recharts": "^3.10.1",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss-animate": "^1.0.7",
+    "zustand": "^5.0.15",
+    "firebase-frameworks": "^0.11.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "main": "server.js",
+  "engines": {
+    "node": "22"
+  }
+}
+[debug] [2026-09-28T14:05:41.418Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase firebase-frameworks-poultry-fms to determine what to deploy 
+[debug] [2026-09-28T14:05:41.419Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-09-28T14:05:41.454Z] Found firebase-functions binary at 'F:\PROGS\portfolio-root\ovocore-root\ovocore-app\.firebase\poultry-fms\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8633
+
+[debug] [2026-09-28T14:05:42.055Z] Got response from /__/functions.yaml {"endpoints":{"ssrpoultryfms":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"ssrpoultryfms"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] i  extensions: ensuring required API firebaseextensions.googleapis.com is enabled... 
+[debug] [2026-09-28T14:05:46.113Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-09-28T14:05:46.113Z] > authorizing via signed-in user (brysonosc20@gmail.com)
+[debug] [2026-09-28T14:05:46.113Z] [iam] checking project poultry-fms for permissions ["firebase.projects.get","firebaseextensions.instances.list"]
+[debug] [2026-09-28T14:05:46.114Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:46.114Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:46.114Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions [none]
+[debug] [2026-09-28T14:05:46.114Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions  x-goog-user-project=poultry-fms
+[debug] [2026-09-28T14:05:46.114Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2026-09-28T14:05:46.952Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions 200
+[debug] [2026-09-28T14:05:46.953Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2026-09-28T14:05:46.953Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:46.953Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:05:46.953Z] >>> [apiv2][query] GET https://firebaseextensions.googleapis.com/v1beta/projects/poultry-fms/instances pageSize=100&pageToken=
+[debug] [2026-09-28T14:05:48.601Z] <<< [apiv2][status] GET https://firebaseextensions.googleapis.com/v1beta/projects/poultry-fms/instances 200
+[debug] [2026-09-28T14:05:48.601Z] <<< [apiv2][body] GET https://firebaseextensions.googleapis.com/v1beta/projects/poultry-fms/instances {}
+[info] i  functions: Loaded environment variables from .env. 
+[info] i  functions: preparing .firebase\poultry-fms\functions directory for uploading... 
+[info] i  functions: packaged F:\PROGS\portfolio-root\ovocore-root\ovocore-app\.firebase\poultry-fms\functions (456.91 MB) for uploading 
+[info] i  functions: ensuring required API run.googleapis.com is enabled... 
+[info] i  functions: ensuring required API eventarc.googleapis.com is enabled... 
+[info] i  functions: ensuring required API pubsub.googleapis.com is enabled... 
+[info] i  functions: ensuring required API storage.googleapis.com is enabled... 
+[info] i  functions: generating the service identity for pubsub.googleapis.com... 
+[debug] [2026-09-28T14:06:37.812Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:37.812Z] Checked if tokens are valid: true, expires at: 1790606098965
+[info] i  functions: generating the service identity for eventarc.googleapis.com... 
+[debug] [2026-09-28T14:06:37.813Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:37.813Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:37.813Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/214482975515/services/pubsub.googleapis.com:generateServiceIdentity [none]
+[debug] [2026-09-28T14:06:37.813Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1beta1/projects/214482975515/services/pubsub.googleapis.com:generateServiceIdentity  x-goog-user-project=214482975515
+[debug] [2026-09-28T14:06:37.813Z] >>> [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/214482975515/services/pubsub.googleapis.com:generateServiceIdentity {}
+[debug] [2026-09-28T14:06:37.815Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/214482975515/services/eventarc.googleapis.com:generateServiceIdentity [none]
+[debug] [2026-09-28T14:06:37.815Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1beta1/projects/214482975515/services/eventarc.googleapis.com:generateServiceIdentity  x-goog-user-project=214482975515
+[debug] [2026-09-28T14:06:37.815Z] >>> [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/214482975515/services/eventarc.googleapis.com:generateServiceIdentity {}
+[debug] [2026-09-28T14:06:39.489Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/214482975515/services/eventarc.googleapis.com:generateServiceIdentity 200
+[debug] [2026-09-28T14:06:39.490Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/214482975515/services/eventarc.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-214482975515@gcp-sa-eventarc.iam.gserviceaccount.com","uniqueId":"102857785313601536478"}}
+[debug] [2026-09-28T14:06:39.517Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/214482975515/services/pubsub.googleapis.com:generateServiceIdentity 200
+[debug] [2026-09-28T14:06:39.517Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/214482975515/services/pubsub.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-214482975515@gcp-sa-pubsub.iam.gserviceaccount.com","uniqueId":"107059303387533427438"}}
+[debug] [2026-09-28T14:06:39.523Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:39.523Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:39.524Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms [none]
+[debug] [2026-09-28T14:06:41.031Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms 200
+[debug] [2026-09-28T14:06:41.031Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/poultry-fms {"projectNumber":"214482975515","projectId":"poultry-fms","lifecycleState":"ACTIVE","name":"poultry-fms","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-09-26T16:33:55.194Z"}
+[debug] [2026-09-28T14:06:41.032Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:41.032Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:41.032Z] >>> [apiv2][query] GET https://compute.googleapis.com/compute/v1/projects/214482975515 [none]
+[debug] [2026-09-28T14:06:42.163Z] <<< [apiv2][status] GET https://compute.googleapis.com/compute/v1/projects/214482975515 403
+[debug] [2026-09-28T14:06:42.163Z] <<< [apiv2][body] GET https://compute.googleapis.com/compute/v1/projects/214482975515 {"error":{"code":403,"message":"Compute Engine API has not been used in project 214482975515 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","errors":[{"message":"Compute Engine API has not been used in project 214482975515 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","domain":"usageLimits","reason":"accessNotConfigured","extendedHelp":"https://console.developers.google.com"}],"status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SERVICE_DISABLED","domain":"googleapis.com","metadata":{"consumer":"projects/214482975515","activationUrl":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515","serviceTitle":"Compute Engine API","service":"compute.googleapis.com","containerInfo":"214482975515"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Compute Engine API has not been used in project 214482975515 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developers console API activation","url":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515"}]}]}}
+[debug] [2026-09-28T14:06:42.165Z] unable to look up default compute service account. Falling back to 214482975515-compute@developer.gserviceaccount.com. Error: {"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":403,"message":"Compute Engine API has not been used in project 214482975515 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","errors":[{"message":"Compute Engine API has not been used in project 214482975515 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","domain":"usageLimits","reason":"accessNotConfigured","extendedHelp":"https://console.developers.google.com"}],"status":"PERMISSION_DENIED","details":[{"@type":"type.googleapis.com/google.rpc.ErrorInfo","reason":"SERVICE_DISABLED","domain":"googleapis.com","metadata":{"consumer":"projects/214482975515","activationUrl":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515","serviceTitle":"Compute Engine API","service":"compute.googleapis.com","containerInfo":"214482975515"}},{"@type":"type.googleapis.com/google.rpc.LocalizedMessage","locale":"en-US","message":"Compute Engine API has not been used in project 214482975515 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."},{"@type":"type.googleapis.com/google.rpc.Help","links":[{"description":"Google developers console API activation","url":"https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515"}]}]}},"response":{"statusCode":403}},"exit":1,"message":"Request to https://compute.googleapis.com/compute/v1/projects/214482975515 had HTTP Error: 403, Compute Engine API has not been used in project 214482975515 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=214482975515 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","status":403}
+[debug] [2026-09-28T14:06:42.167Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:42.167Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:42.167Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites/poultry-fms [none]
+[debug] [2026-09-28T14:06:43.791Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites/poultry-fms 200
+[debug] [2026-09-28T14:06:43.791Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/poultry-fms/sites/poultry-fms {"name":"projects/poultry-fms/sites/poultry-fms","defaultUrl":"https://poultry-fms.web.app","appId":"1:214482975515:web:cc97a766604016978cf1be","type":"DEFAULT_SITE"}
+[debug] [2026-09-28T14:06:43.804Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:43.804Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:43.804Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/poultry-fms/versions [none]
+[debug] [2026-09-28T14:06:43.804Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/poultry-fms/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase","firebase-web-framework":"next_ssr"}}
+[debug] [2026-09-28T14:06:45.529Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/poultry-fms/versions 200
+[debug] [2026-09-28T14:06:45.529Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/poultry-fms/versions {"name":"projects/214482975515/sites/poultry-fms/versions/d8bcbc52efdee4fe","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase","firebase-web-framework":"next_ssr"}}
+[debug] [2026-09-28T14:06:45.531Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:45.531Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:45.531Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/poultry-fms/billingInfo [none]
+[debug] [2026-09-28T14:06:46.868Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/poultry-fms/billingInfo 200
+[debug] [2026-09-28T14:06:46.868Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/poultry-fms/billingInfo {"name":"projects/poultry-fms/billingInfo","projectId":"poultry-fms","billingAccountName":"billingAccounts/012332-9324C0-D73FF4","billingEnabled":true}
+[debug] [2026-09-28T14:06:46.871Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:46.871Z] Checked if tokens are valid: true, expires at: 1790606098965
+[debug] [2026-09-28T14:06:46.871Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v2/projects/poultry-fms/locations/us-central1/functions:generateUploadUrl [none]
+[debug] [2026-09-28T14:06:48.310Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v2/projects/poultry-fms/locations/us-central1/functions:generateUploadUrl 200
+[debug] [2026-09-28T14:06:48.310Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/poultry-fms/locations/us-central1/functions:generateUploadUrl {"uploadUrl":"https://storage.googleapis.com/gcf-v2-uploads-214482975515.us-central1.cloudfunctions.appspot.com/a15e6aa8-e3ba-457b-99cc-8038ca107c2e.zip?GoogleAccessId=service-214482975515@gcf-admin-robot.iam.gserviceaccount.com&Expires=1790606208&Signature=uYagqFAdPWdGtaFOcwo5N7cgdky49JJr1pGygIkHzYTp%2F08ONbidgJob3IbD9tBJU%2FmMLq5gYNMiVjBf7NfiKAlqrm0LSB2ASNgEIa6OPBp7nQI2j3xXz8458WUIWOgyrbJrlwFk5gZ7AvL0neIsDl5yZPi3H0ceyz0OpIZy2FjeaO95Dp8hiRBDAg3qtDSFnvofR5%2BzWf7aIBY2VFGIQzrGBKsnqrNNh072l0Ggz5uHkPJYcob7y093d71sBOCLuIZhE5VFmLuAGrCc86uZv5oOvrgUZN%2BaYG%2Bv0%2Fxo0O2lqPEeUNEXrbYSIR%2Fb%2BIdGgzVPdNYSOHYuweUbzcM9cA%3D%3D","storageSource":{"bucket":"gcf-v2-uploads-214482975515.us-central1.cloudfunctions.appspot.com","object":"a15e6aa8-e3ba-457b-99cc-8038ca107c2e.zip"}}
+[debug] [2026-09-28T14:06:48.341Z] >>> [apiv2][query] PUT https://storage.googleapis.com/gcf-v2-uploads-214482975515.us-central1.cloudfunctions.appspot.com/a15e6aa8-e3ba-457b-99cc-8038ca107c2e.zip GoogleAccessId=service-214482975515%40gcf-admin-robot.iam.gserviceaccount.com&Expires=1790606208&Signature=uYagqFAdPWdGtaFOcwo5N7cgdky49JJr1pGygIkHzYTp%2F08ONbidgJob3IbD9tBJU%2FmMLq5gYNMiVjBf7NfiKAlqrm0LSB2ASNgEIa6OPBp7nQI2j3xXz8458WUIWOgyrbJrlwFk5gZ7AvL0neIsDl5yZPi3H0ceyz0OpIZy2FjeaO95Dp8hiRBDAg3qtDSFnvofR5%2BzWf7aIBY2VFGIQzrGBKsnqrNNh072l0Ggz5uHkPJYcob7y093d71sBOCLuIZhE5VFmLuAGrCc86uZv5oOvrgUZN%2BaYG%2Bv0%2Fxo0O2lqPEeUNEXrbYSIR%2Fb%2BIdGgzVPdNYSOHYuweUbzcM9cA%3D%3D
+[debug] [2026-09-28T14:06:48.341Z] >>> [apiv2][body] PUT https://storage.googleapis.com/gcf-v2-uploads-214482975515.us-central1.cloudfunctions.appspot.com/a15e6aa8-e3ba-457b-99cc-8038ca107c2e.zip [stream]
