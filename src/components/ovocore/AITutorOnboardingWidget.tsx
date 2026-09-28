@@ -1,0 +1,239 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Bot, CheckCircle2, ChevronRight, Sparkles, Map, Target, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { claimFarmInvite, getFarmInvite, FarmInviteRecord } from '@/services/farmService';
+import { updateUserOnboardingStatus } from '@/services/userService';
+import { useToast } from '@/hooks/use-toast';
+import { auth } from '@/lib/firebase';
+import { UserProfile } from '@/types/user';
+
+interface AITutorOnboardingWidgetProps {
+  userProfile?: UserProfile | null;
+  onOnboardingComplete?: () => void;
+}
+
+export default function AITutorOnboardingWidget({ userProfile, onOnboardingComplete }: AITutorOnboardingWidgetProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { toast } = useToast();
+  
+  const token = searchParams?.get('tutorToken');
+  
+  const [isOpen, setIsOpen] = useState(false);
+  const [step, setStep] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [inviteData, setInviteData] = useState<FarmInviteRecord | null>(null);
+  const [claiming, setClaiming] = useState(false);
+
+  useEffect(() => {
+    if (token) {
+      loadTokenData(token);
+    } else if (userProfile && userProfile.hasCompletedOnboarding !== true) {
+      // Trigger general onboarding if no token but user hasn't completed onboarding
+      setIsOpen(true);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  }, [token, userProfile]);
+
+  const loadTokenData = async (code: string) => {
+    try {
+      const data = await getFarmInvite(code);
+      if (data && data.status === 'pending') {
+        setInviteData(data);
+        setIsOpen(true);
+      } else if (data && data.status === 'accepted') {
+        toast({ title: 'Already Onboarded', description: 'This invite link has already been used.' });
+        if (userProfile && userProfile.hasCompletedOnboarding !== true) {
+           setIsOpen(true); // Still show generic onboarding
+        }
+      } else {
+        toast({ variant: 'destructive', title: 'Invalid Link', description: 'This AI Tutor link is invalid or expired.' });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNext = () => {
+    if (step < steps.length - 1) {
+      setStep(prev => prev + 1);
+    } else {
+      handleComplete();
+    }
+  };
+
+  const finalizeOnboardingState = async () => {
+    if (auth.currentUser) {
+      await updateUserOnboardingStatus(auth.currentUser.uid);
+    }
+    if (onOnboardingComplete) {
+      onOnboardingComplete();
+    }
+    setIsOpen(false);
+    if (token) {
+      router.replace('/admin/dashboard/01-dashboard');
+    }
+  }
+
+  const handleComplete = async () => {
+    if (!auth.currentUser) return;
+    setClaiming(true);
+    try {
+      if (inviteData) {
+        await claimFarmInvite(inviteData.code, auth.currentUser.uid, auth.currentUser.email || '');
+      }
+      await finalizeOnboardingState();
+      
+      toast({
+        title: "Onboarding Complete! 🎉",
+        description: inviteData ? "You've successfully joined the farm team." : "Welcome aboard! Let's get to work.",
+      });
+    } catch (error: any) {
+      toast({ variant: 'destructive', title: 'Failed to complete', description: error.message });
+    } finally {
+      setClaiming(false);
+    }
+  };
+
+  const handleSkip = async () => {
+    if (!auth.currentUser) return;
+    try {
+      if (inviteData) {
+        await claimFarmInvite(inviteData.code, auth.currentUser.uid, auth.currentUser.email || '');
+        toast({ title: "Invite Claimed!", description: "You've successfully joined the farm team." });
+      }
+      await finalizeOnboardingState();
+    } catch (error: any) {
+      toast({ variant: 'destructive', title: 'Failed to skip', description: error.message });
+    }
+  };
+
+  if (loading || !isOpen) return null;
+
+  const steps = inviteData ? [
+    {
+      title: `Welcome to OvoCore, ${inviteData.ownerName}!`,
+      content: `I'm your AI Tutor. You've been invited as a **${inviteData.role}** for **${inviteData.farmName}**. Let's get you up to speed!`,
+      icon: <Bot className="w-12 h-12 text-indigo-500" />
+    },
+    {
+      title: "Master the Territory",
+      content: "Use the **Territory Map** to track all active leads, plan your daily routes, and see geographical pipeline value at a glance.",
+      icon: <Map className="w-12 h-12 text-emerald-500" />
+    },
+    {
+      title: "Command Center",
+      content: "Your **Action Queue** tells you exactly who to follow up with each day. Never let a prospect slip through the cracks again.",
+      icon: <Target className="w-12 h-12 text-rose-500" />
+    },
+    {
+      title: "Ready to Start?",
+      content: "You're all set! Click the button below to finalize your account and access your new workspace.",
+      icon: <Sparkles className="w-12 h-12 text-amber-500" />
+    }
+  ] : [
+    {
+      title: `Welcome to AgriTools!`,
+      content: `I'm your AI Onboarding Tutor. Let's take a quick look at how to navigate your dashboard and maximize your efficiency.`,
+      icon: <Bot className="w-12 h-12 text-indigo-500" />
+    },
+    {
+      title: "Master the Territory",
+      content: "Use the **Territory Map** to track all active leads, plan your daily routes, and see geographical pipeline value at a glance.",
+      icon: <Map className="w-12 h-12 text-emerald-500" />
+    },
+    {
+      title: "Command Center",
+      content: "Your **Action Queue** tells you exactly who to follow up with each day. Never let a prospect slip through the cracks again.",
+      icon: <Target className="w-12 h-12 text-rose-500" />
+    },
+    {
+      title: "Ready to Start?",
+      content: "You're all set! Click the button below to complete your onboarding and access your workspace.",
+      icon: <Sparkles className="w-12 h-12 text-amber-500" />
+    }
+  ];
+
+  const currentStep = steps[step];
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key={step}
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 1.05, y: -20 }}
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          className="relative w-full max-w-lg bg-card border border-border/50 shadow-2xl rounded-3xl p-8 overflow-hidden mx-4"
+        >
+          {/* Skip Button */}
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleSkip}
+            className="absolute top-4 right-4 h-8 px-3 text-[10px] font-bold text-muted-foreground hover:bg-muted/50 z-20 rounded-full"
+          >
+            Skip <X className="w-3 h-3 ml-1" />
+          </Button>
+
+          {/* Decorative background glow */}
+          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500" />
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="flex flex-col items-center text-center space-y-6 relative z-10 pt-4">
+            <motion.div 
+              initial={{ rotate: -10 }}
+              animate={{ rotate: 0 }}
+              className="p-4 bg-muted/50 rounded-2xl shadow-sm border border-border/50"
+            >
+              {currentStep.icon}
+            </motion.div>
+
+            <div className="space-y-3">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">{currentStep.title}</h2>
+              <p className="text-muted-foreground leading-relaxed text-sm">
+                {currentStep.content.split('**').map((part, i) => 
+                  i % 2 === 1 ? <strong key={i} className="text-foreground font-bold">{part}</strong> : part
+                )}
+              </p>
+            </div>
+
+            <div className="w-full pt-6 flex items-center justify-between gap-4">
+              <div className="flex gap-1.5">
+                {steps.map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`h-1.5 rounded-full transition-all duration-300 ${i === step ? 'w-6 bg-indigo-500' : 'w-1.5 bg-border'}`}
+                  />
+                ))}
+              </div>
+
+              <Button 
+                onClick={handleNext} 
+                disabled={claiming}
+                className="h-11 px-6 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/20 transition-all hover:scale-105"
+              >
+                {claiming ? (
+                  <Sparkles className="w-4 h-4 mr-2 animate-spin" />
+                ) : step === steps.length - 1 ? (
+                  <><CheckCircle2 className="w-4 h-4 mr-2" /> Start Working</>
+                ) : (
+                  <>Next Step <ChevronRight className="w-4 h-4 ml-1" /></>
+                )}
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}

@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base - Eggshell Light Mode */
+  --background: #faf9f6;
+  /* Soft off-white to reduce glare */
+  --foreground: #2d261e;
+  /* Deep earthy brown/grey for readable text */
+  --surface: #ffffff;
+  /* Crisp white for dashboard cards */
+  --border: #e7e5e4;
+
+  /* Poultry AgTech Semantic Palette */
+  --primary-yolk: #f59e0b;
+  /* Warm yolk-yellow for primary buttons/actions */
+  --primary-foreground: #422006;
+  --alert-rooster: #ef4444;
+  /* High-visibility red for mortality or climate alerts */
+  --growth-green: #10b981;
+  /* Positive indicators for FCR and weight gain */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+
+  /* Custom theme colors exposed to Tailwind utility classes */
+  --color-primary: var(--primary-yolk);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-alert: var(--alert-rooster);
+  --color-growth: var(--growth-green);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Base - Deep Night Mode (Low eye strain for 3 AM sensor checks) */
+    --background: #111110;
+    --foreground: #f5f5f4;
+    --surface: #1c1917;
+    /* Earthy dark grey for modular cards */
+    --border: #44403c;
+
+    /* Adjusted saturation for dark mode contrast */
+    --primary-yolk: #fbbf24;
+    --alert-rooster: #f87171;
+    --growth-green: #34d399;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
