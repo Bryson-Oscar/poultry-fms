@@ -12,6 +12,8 @@ import { Loader2, User as UserIcon, Save, Sparkles, Building, MapPin, Briefcase,
 import { UserProfile } from '@/types/user';
 import { Checkbox } from '@/components/ui/checkbox';
 import { PeckingChickenLoader } from '@/components/ovocore/PeckingChickenLoader';
+import AITutorOnboardingWidget from '@/components/ovocore/AITutorOnboardingWidget';
+import { EllaInfrastructureAuditWidget } from '@/components/ovocore/EllaInfrastructureAuditWidget';
 
 export default function OvoCoreProfilePage() {
   const { toast } = useToast();
@@ -365,6 +367,30 @@ export default function OvoCoreProfilePage() {
         </Button>
       </div>
 
+      <div className="pt-6">
+        <EllaInfrastructureAuditWidget 
+          onTierUnlocked={async (tier) => {
+            console.log(`User upgraded to module cluster: ${tier}`);
+            // Also save this to Firestore so it unlocks the features globally
+            if (user) {
+              let plan = 'trial';
+              if (tier === 'Tier 1') plan = 'operator';
+              else if (tier === 'Tier 2') plan = 'pro';
+              else if (tier === 'Tier 3') plan = 'syndicate';
+              
+              try {
+                const userRef = doc(db, 'users', user.uid);
+                await updateDoc(userRef, { plan });
+                toast({ title: 'Plan Updated', description: `Features for ${tier} unlocked successfully.` });
+              } catch (e) {
+                console.error(e);
+              }
+            }
+          }} 
+        />
+      </div>
+
+      {profile && <AITutorOnboardingWidget userProfile={profile} />}
     </div>
   );
 }

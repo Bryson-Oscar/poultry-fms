@@ -97,8 +97,8 @@ export function sanitizePhone(phone: string): string {
  * Builds an authenticated target link that routes through the auth gate
  */
 export function createAuthRedirectUrl(targetPath: string): string {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://bryson-oscar-portfolio.webb.app';
-  return `${origin}/login?redirect=${encodeURIComponent(targetPath)}`;
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+  return `${baseUrl}${targetPath}`;
 }
 
 /**
@@ -327,4 +327,54 @@ export function dispatchProactiveNudge(leadItem: any) {
 
 function generateOvoCoreRecommendation(ctx: FarmTelemetryContext) {
   throw new Error('Function not implemented.');
+}
+
+export interface SuperAdminUpsellContext {
+  targetOwnerName: string;
+  targetFarmName: string;
+  targetPhone: string;
+  currentTier: 'Tier 1' | 'Tier 2' | 'Pro Elite' | string;
+  recommendedUpgradeTier: 'Pro Elite' | 'Sovereign Syndicate' | string;
+  estimatedMonthlySavingsKES: number;
+}
+
+
+
+/**
+ * Generates a high-status, Machiavellian upsell dispatch for Super Admins
+ */
+export function generateSuperAdminUpsellMessage(ctx: SuperAdminUpsellContext): {
+  message: string;
+  cleanPhone: string;
+  waUrl: string;
+} {
+  const greeting = `Habari ${ctx.targetOwnerName || 'Mkulima'}! 🦅\n*OvoCore Executive Dispatch* — *Institutional Scale Advisory*\n\n`;
+  
+  const body = 
+    `Our telemetry audit for *${ctx.targetFarmName || 'your facility'}* indicates you are currently operating on *${ctx.currentTier}* governance.\n\n` +
+    `Based on your regional bird capacity, manual tracking and unmonitored silo margins are introducing an estimated *KSh ${ctx.estimatedMonthlySavingsKES.toLocaleString()} / month* in avoidable feed spillage and invisible biological drift.\n\n` +
+    `*The Sovereign Syndicate Standard:* \n` +
+    `Leading commercial producers in your county have transitioned to *${ctx.recommendedUpgradeTier}*, unlocking automated IoT silo telemetry, predictive mortality watchdogs, and direct mill-gate procurement automation.\n\n` +
+    `*Your Strategic Directive:* \n` +
+    `Would it be completely unreasonable to provision your facility with automated telemetry this week to capture those margin leaks before the next production cycle?\n\n` +
+    `👉 *Review & Authorize Upgrade:* ${createAuthRedirectUrl(`/ovocore/farm/upgrade?tier=${ctx.recommendedUpgradeTier.toLowerCase().replace(/\s+/g, '_')}`)}`;
+
+  const cleanPhone = sanitizePhone(ctx.targetPhone);
+  const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(greeting + body)}`;
+
+  return {
+    message: greeting + body,
+    cleanPhone,
+    waUrl
+  };
+}
+
+/**
+ * Direct action dispatcher for Super Admin dashboard UI
+ */
+export function dispatchSuperAdminUpsellWhatsApp(ctx: SuperAdminUpsellContext) {
+  const { waUrl } = generateSuperAdminUpsellMessage(ctx);
+  if (typeof window !== 'undefined') {
+    window.open(waUrl, '_blank');
+  }
 }

@@ -46,6 +46,18 @@ export function FarmComplianceOverview({ farmId }: FarmComplianceOverviewProps) 
         </div>
         <LogComplianceEventModal farmId={farmId} />
       </CardHeader>
+      
+      {/* Principle 5: Sell Yourself First (Systemic Authority) */}
+      <div className="bg-rose-950/40 border-y border-rose-900/50 p-4 flex items-start gap-3">
+        <ShieldAlert className="w-5 h-5 text-rose-500 shrink-0 mt-0.5 animate-pulse" />
+        <div className="space-y-1">
+          <h4 className="text-xs font-bold text-rose-400 uppercase tracking-widest">Audit Compliance Check Paused</h4>
+          <p className="text-[11px] text-rose-300/80 leading-relaxed max-w-2xl">
+            2 unrecorded days detected in House 01. Financial ledger reconciliation suspended until telemetry is synchronized.
+          </p>
+        </div>
+      </div>
+
       <CardContent className="p-6">
         {compliance.length === 0 ? (
           <div className="text-center py-10 text-muted-foreground bg-muted/20 border border-dashed rounded-2xl space-y-2">

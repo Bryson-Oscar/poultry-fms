@@ -1,32 +1,34 @@
-// components/OvoCoreAccessGate.tsx
+// components/ovocore/OvoCoreAccessGate.tsx
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
 import { ensureUserDocument } from '@/services/userService';
 import { OvoCoreUpsell } from '@/components/ovocore/OvoCoreUpsell';
 import { PeckingChickenLoader } from '@/components/ovocore/PeckingChickenLoader';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ShieldAlert, Sparkles, Clock, AlertTriangle } from 'lucide-react';
+import { Sparkles, Clock, AlertTriangle, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 
 export interface OvoCoreAccessGateProps {
   children: React.ReactNode;
+  requiredTier?: 'operator' | 'pro' | 'syndicate';
+  featureName?: string;
 }
 
-export function OvoCoreAccessGate({ children }: OvoCoreAccessGateProps) {
+export function OvoCoreAccessGate({ children, requiredTier = 'operator', featureName }: OvoCoreAccessGateProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentTier, setCurrentTier] = useState<'operator' | 'pro' | 'syndicate'>('operator');
   const [planState, setPlanState] = useState<{
-    status: 'trial' | 'upcoming_renewal' | 'grace_period' | 'hard_paywall' | 'pro_annual';
+    status: 'active' | 'upcoming_renewal' | 'grace_period' | 'hard_paywall';
     daysRemaining: number;
     daysSinceOnboarding: number;
   }>({
-    status: 'trial',
+    status: 'active',
     daysRemaining: 180,
     daysSinceOnboarding: 0
   });
@@ -39,14 +41,23 @@ export function OvoCoreAccessGate({ children }: OvoCoreAccessGateProps) {
       if (u) {
         try {
           const profile = await ensureUserDocument(u);
-          const plan = profile.plan;
-
-          if (plan === 'pro_annual') {
-            setPlanState({ status: 'pro_annual', daysRemaining: 365, daysSinceOnboarding: 0 });
+          const plan = profile.plan || 'operator';
+          
+          if (plan === 'syndicate') {
+            setCurrentTier('syndicate');
+            setPlanState({ status: 'active', daysRemaining: 365, daysSinceOnboarding: 0 });
+            setIsLoading(false);
+            return;
+          }
+          if (plan === 'pro_annual' || plan === 'pro') {
+            setCurrentTier('pro');
+            setPlanState({ status: 'active', daysRemaining: 365, daysSinceOnboarding: 0 });
             setIsLoading(false);
             return;
           }
 
+          // Operator tier logic (trial expiration etc.)
+          setCurrentTier('operator');
           const createdAt = profile.createdAt?.toDate ? profile.createdAt.toDate() : new Date(u.metadata.creationTime || Date.now());
           const diffMs = Date.now() - createdAt.getTime();
           const daysSinceOnboarding = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
@@ -60,7 +71,7 @@ export function OvoCoreAccessGate({ children }: OvoCoreAccessGateProps) {
           } else if (daysSinceOnboarding >= 165 && daysSinceOnboarding < 180) {
             setPlanState({ status: 'upcoming_renewal', daysRemaining, daysSinceOnboarding });
           } else {
-            setPlanState({ status: 'trial', daysRemaining, daysSinceOnboarding });
+            setPlanState({ status: 'active', daysRemaining, daysSinceOnboarding });
           }
         } catch (e) {
           console.warn("Access gate user check error:", e);
@@ -72,23 +83,28 @@ export function OvoCoreAccessGate({ children }: OvoCoreAccessGateProps) {
     return () => unsubscribe();
   }, []);
 
+  const hasAccess = () => {
+    const tiers = ['operator', 'pro', 'syndicate'];
+    const currentIdx = tiers.indexOf(currentTier);
+    const requiredIdx = tiers.indexOf(requiredTier);
+    return currentIdx >= requiredIdx;
+  };
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-slate-100">
+      <div className="min-h-[400px] bg-slate-950 flex flex-col items-center justify-center p-6 text-slate-100 rounded-2xl border border-slate-800">
         <PeckingChickenLoader />
         <p className="mt-4 text-xs font-mono text-slate-400 animate-pulse">
-          Verifying OvoCore Workspace Subscription & Access Gate...
+          Authenticating Syndicate Clearance Protocols...
         </p>
       </div>
     );
   }
 
-  if (planState.status === 'hard_paywall') {
+  if (planState.status === 'hard_paywall' || !hasAccess()) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-4">
-        <div className="max-w-xl w-full">
-          <OvoCoreUpsell />
-        </div>
+      <div className="bg-slate-950 text-white flex flex-col items-center justify-center py-12 rounded-2xl border border-slate-800 overflow-hidden">
+        <OvoCoreUpsell requiredTier={requiredTier} />
       </div>
     );
   }
@@ -97,15 +113,15 @@ export function OvoCoreAccessGate({ children }: OvoCoreAccessGateProps) {
     <div className="relative">
       {/* Upcoming Renewal Top Alert Banner */}
       {planState.status === 'upcoming_renewal' && (
-        <div className="bg-amber-500/10 border-b border-amber-500/20 px-4 py-2 text-xs font-mono text-amber-300 flex items-center justify-between">
+        <div className="bg-amber-500/10 border-b border-amber-500/20 px-4 py-2 text-xs font-mono text-amber-300 flex items-center justify-between rounded-t-xl">
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-amber-400 animate-pulse" />
             <span>
               <strong>Trial Renewal Notice:</strong> Your 6-month free trial expires in {planState.daysRemaining} days.
             </span>
           </div>
-          <Link href="/ovocore?action=upgrade" className="font-bold underline hover:text-white">
-            Upgrade to Pro Annual &rarr;
+          <Link href="/upgrade" className="font-bold underline hover:text-white">
+            Upgrade to Pro Elite &rarr;
           </Link>
         </div>
       )}
@@ -145,9 +161,9 @@ export function OvoCoreAccessGate({ children }: OvoCoreAccessGateProps) {
               >
                 Continue Viewing Telemetry
               </Button>
-              <Link href="/ovocore?action=upgrade" className="w-full sm:w-auto">
+              <Link href="/upgrade" className="w-full sm:w-auto">
                 <Button className="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold rounded-xl text-xs">
-                  <Sparkles className="w-4 h-4 mr-1.5" /> Upgrade Pro Annual (KSh 12,000/yr)
+                  <Sparkles className="w-4 h-4 mr-1.5" /> Upgrade Pro Elite
                 </Button>
               </Link>
             </DialogFooter>

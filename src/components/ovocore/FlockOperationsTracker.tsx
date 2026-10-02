@@ -33,6 +33,7 @@ export const POULTRY_PROTOCOLS: ProtocolTask[] = [
   { id: 't3', dayMin: 12, dayMax: 14, title: 'Gumboro (IBD) Primary Vaccine', category: 'Vaccine', description: 'Critical first Gumboro dose. Withhold water for 2 hours prior.' },
   { id: 't4', dayMin: 28, dayMax: 30, title: 'Feed Transition to Grower Mash', category: 'Nutrition', description: 'Gradually mix starter and grower over 4 days to avoid digestive shock.' },
   { id: 't5', dayMin: 35, dayMax: 35, title: 'Fowl Typhoid / Gumboro Booster', category: 'Vaccine', description: 'Administer booster vaccination per regional vet guidelines.' },
+  { id: 't6_mask', dayMin: 40, dayMax: 41, title: 'Diagnostic: Water/Feed Ratio Anomaly', category: 'Health', description: 'We noticed your water-to-feed ratio spiked to 2.4:1 today. It’s usually caused by a slipped nipple regulator or hot weather—though occasionally it\'s just a sensor ping error. Let’s check line 2 to be safe.' },
   { id: 't6', dayMin: 84, dayMax: 84, title: 'Routine Deworming & Vitamin Complex', category: 'Health', description: 'Administer broad-spectrum anthelmintic and multi-vitamins.' },
   { id: 't7', dayMin: 112, dayMax: 119, title: 'Pre-Lay Feed & Calcium Transition', category: 'Nutrition', description: 'Introduce pre-lay feed containing 2.5% calcium to prep medullary bone.' },
   { id: 't8', dayMin: 126, dayMax: 130, title: 'Lighting Program Activation (16 hrs)', category: 'Management', description: 'Set automatic timers to provide 16 hours of steady light daily.' },

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { claimFarmInvite, getFarmInvite, FarmInviteRecord } from '@/services/farmService';
 import { updateUserOnboardingStatus } from '@/services/userService';
 import { useToast } from '@/hooks/use-toast';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 import { UserProfile } from '@/types/user';
 
 interface AITutorOnboardingWidgetProps {
@@ -28,6 +28,22 @@ export default function AITutorOnboardingWidget({ userProfile, onOnboardingCompl
   const [loading, setLoading] = useState(true);
   const [inviteData, setInviteData] = useState<FarmInviteRecord | null>(null);
   const [claiming, setClaiming] = useState(false);
+  const [farmCapacity, setFarmCapacity] = useState('5000');
+  const [analyzedTier, setAnalyzedTier] = useState<string | null>('Tier 2: Pro Elite');
+
+  const handleCapacityChange = (val: string) => {
+    setFarmCapacity(val);
+    const num = parseInt(val, 10);
+    if (isNaN(num)) {
+      setAnalyzedTier(null);
+    } else if (num < 2000) {
+      setAnalyzedTier('Tier 1: OvoCore Operator');
+    } else if (num <= 10000) {
+      setAnalyzedTier('Tier 2: Pro Elite');
+    } else {
+      setAnalyzedTier('Tier 3: Sovereign Syndicate');
+    }
+  };
 
   useEffect(() => {
     if (token) {
@@ -73,6 +89,20 @@ export default function AITutorOnboardingWidget({ userProfile, onOnboardingCompl
   const finalizeOnboardingState = async () => {
     if (auth.currentUser) {
       await updateUserOnboardingStatus(auth.currentUser.uid);
+      
+      // Update plan based on capacity audit
+      try {
+        const { doc, updateDoc } = await import('firebase/firestore');
+        const userRef = doc(db, 'users', auth.currentUser.uid);
+        let plan = 'trial';
+        if (analyzedTier?.includes('Operator')) plan = 'operator';
+        else if (analyzedTier?.includes('Pro Elite')) plan = 'pro';
+        else if (analyzedTier?.includes('Sovereign')) plan = 'syndicate';
+        
+        await updateDoc(userRef, { plan });
+      } catch (e) {
+        console.error("Failed to update user tier plan", e);
+      }
     }
     if (onOnboardingComplete) {
       onOnboardingComplete();
@@ -139,26 +169,36 @@ export default function AITutorOnboardingWidget({ userProfile, onOnboardingCompl
       content: "You're all set! Click the button below to finalize your account and access your new workspace.",
       icon: <Sparkles className="w-12 h-12 text-amber-500" />
     }
-  ] : [
     {
-      title: `Welcome to AgriTools!`,
-      content: `I'm your AI Onboarding Tutor. Let's take a quick look at how to navigate your dashboard and maximize your efficiency.`,
+      title: `Hi, I'm Ovo AI | Smart Farm Assistant`,
+      content: `To navigate your application and pinpoint actionable areas for operational improvement, you will follow a structured onboarding process that combines performance metrics and systematic review of all farm functionality. Let's run this evaluation effectively.`,
       icon: <Bot className="w-12 h-12 text-indigo-500" />
     },
     {
-      title: "Master the Territory",
-      content: "Use the **Territory Map** to track all active leads, plan your daily routes, and see geographical pipeline value at a glance.",
+      title: "Automated Infrastructure Readiness Audit",
+      content: "Before we begin, Ella needs to evaluate your farm's scale. Input your current or target bird capacity below to automatically unlock the appropriate operational features.",
+      icon: <Sparkles className="w-12 h-12 text-indigo-400" />,
+      inputType: 'capacity'
+    },
+    {
+      title: "Baseline Navigation Walkthrough",
+      content: "Start by mapping the full end-to-end journey for your core tasks (e.g., daily logs, feed restocking, compliance). Document every interaction path to create a consistent reference for later testing.",
       icon: <Map className="w-12 h-12 text-emerald-500" />
     },
     {
-      title: "Command Center",
-      content: "Your **Action Queue** tells you exactly who to follow up with each day. Never let a prospect slip through the cracks again.",
+      title: "Collect Quantitative Performance Metrics",
+      content: "Run controlled farm navigation tests and aggregate real-flock behavioral data to measure concrete performance: task completion rates (logs), average task completion time, and drop-off points.",
       icon: <Target className="w-12 h-12 text-rose-500" />
     },
     {
-      title: "Ready to Start?",
-      content: "You're all set! Click the button below to complete your onboarding and access your workspace.",
+      title: "Gather Qualitative User Insight",
+      content: "Observe as farm operators navigate the application without guidance, and note where they hesitate or get frustrated around ambiguous icons, unclear menu labels, or hidden operational features.",
       icon: <Sparkles className="w-12 h-12 text-amber-500" />
+    },
+    {
+      title: "Run a Full Application Audit",
+      content: "Expand your review beyond just navigation to cover all core app performance dimensions: Usability (forms), Functionality, Technical health, and Accessibility.",
+      icon: <CheckCircle2 className="w-12 h-12 text-blue-500" />
     }
   ];
 
@@ -198,13 +238,41 @@ export default function AITutorOnboardingWidget({ userProfile, onOnboardingCompl
               {currentStep.icon}
             </motion.div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 w-full">
               <h2 className="text-2xl font-bold tracking-tight text-foreground">{currentStep.title}</h2>
               <p className="text-muted-foreground leading-relaxed text-sm">
                 {currentStep.content.split('**').map((part, i) => 
                   i % 2 === 1 ? <strong key={i} className="text-foreground font-bold">{part}</strong> : part
                 )}
               </p>
+              
+              {(currentStep as any).inputType === 'capacity' && (
+                <div className="pt-4 space-y-3 px-4">
+                  <input
+                    type="number"
+                    value={farmCapacity}
+                    onChange={(e) => handleCapacityChange(e.target.value)}
+                    className="flex h-12 w-full rounded-xl border border-input bg-background px-3 py-2 text-lg font-bold text-center placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="E.g. 5000"
+                  />
+                  <AnimatePresence>
+                    {analyzedTier && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-left mt-2"
+                      >
+                        <p className="text-[10px] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3" /> Audit Result
+                        </p>
+                        <p className="text-sm font-medium leading-tight">
+                          Based on a capacity of {parseInt(farmCapacity).toLocaleString() || 0} birds, Ella has unlocked <strong className="text-indigo-700 dark:text-indigo-300">{analyzedTier}</strong> features for your workspace.
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
             </div>
 
             <div className="w-full pt-6 flex items-center justify-between gap-4">

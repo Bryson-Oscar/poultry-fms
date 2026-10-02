@@ -65,6 +65,7 @@ import { PeckingChickenLoader } from '@/components/ovocore/PeckingChickenLoader'
 import { useToast } from '@/hooks/use-toast';
 import { computeUnitEggEconomics } from '@/lib/ovocore/layerAmortization';
 import { generateMonthlyDossier } from '@/lib/ovocore/generateDossierPdf';
+import { BankDossierAuthorization } from '@/components/ovocore/BankDossierAuthorization';
 
 function cleanPhoneForWhatsApp(phoneStr?: string): string {
   if (!phoneStr) return '';
@@ -486,6 +487,10 @@ function FinanceContent() {
             </p>
           </CardContent>
         </Card>
+      </div>
+
+      <div className="py-2">
+        <BankDossierAuthorization farmId={farmId} />
       </div>
 
       {/* Unit Egg Economics & Pullet Amortization Banner (For Layer / Mixed Farms) */}

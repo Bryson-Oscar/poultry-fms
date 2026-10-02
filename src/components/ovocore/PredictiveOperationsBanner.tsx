@@ -198,7 +198,19 @@ export function PredictiveOperationsBanner({
       sopModalKey: 'drinker-flush'
     });
 
-    // 7. Feed Transition Directives
+    // 7. Feed Directives & Scarcity (Fear of Loss - Machiavellian Principle 2)
+    // Simulating a low silo state for demonstrative purposes or logic if feed tracking exists
+    list.push({
+      id: 'low-feed-silo-warning',
+      category: 'FEED',
+      icon: AlertTriangle,
+      title: 'Silo reserves down to 2 days',
+      expectedValue: 'Reorder immediately to maintain wholesale pricing',
+      actionPrompt: 'Would you prefer automated scheduled silo delivery on Tuesday, or an emergency priority drop on Monday? Remaining un-reordered risks a 14-day production halt at a 12% premium.',
+      urgency: 'urgent',
+      sopModalKey: 'feed-reorder'
+    });
+
     if (farmType === 'broilers') {
       if (flockAgeDays >= 10 && flockAgeDays <= 12) {
         list.push({
@@ -313,8 +325,8 @@ export function PredictiveOperationsBanner({
     <div
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className={`w-full border-y transition-colors duration-500 px-4 py-2 text-xs select-none ${activeItem.urgency === 'urgent'
-          ? 'bg-rose-950/50 border-rose-800 text-rose-200'
+      className={`w-full border-y transition-colors duration-500 px-4 py-3 text-sm select-none shadow-md ${activeItem.urgency === 'urgent'
+          ? 'bg-rose-600 border-rose-500 text-white shadow-[0_0_15px_rgba(225,29,72,0.4)] relative z-10'
           : 'bg-slate-900 border-border/80 text-slate-200'
         }`}
     >
@@ -333,10 +345,17 @@ export function PredictiveOperationsBanner({
           </Badge>
 
           <div className="flex items-center gap-2 truncate">
-            <Icon className="w-4 h-4 text-primary shrink-0" />
-            <span className="font-bold text-foreground truncate">{activeItem.title}:</span>
-            <span className="text-muted-foreground hidden md:inline truncate">{activeItem.actionPrompt}</span>
-            <span className="font-mono text-[11px] font-semibold text-primary/90 hidden lg:inline">({activeItem.expectedValue})</span>
+            {activeItem.urgency === 'urgent' && <span className="text-base animate-bounce">🚨</span>}
+            <Icon className={`w-5 h-5 shrink-0 ${activeItem.urgency === 'urgent' ? 'text-white' : 'text-primary'}`} />
+            <span className={`font-extrabold truncate ${activeItem.urgency === 'urgent' ? 'text-white text-base tracking-tight' : 'text-foreground'}`}>
+              {activeItem.title.toUpperCase()}:
+            </span>
+            <span className={`hidden md:inline truncate ${activeItem.urgency === 'urgent' ? 'text-rose-100 font-semibold' : 'text-muted-foreground'}`}>
+              {activeItem.actionPrompt}
+            </span>
+            <span className={`font-mono text-[11px] font-bold hidden lg:inline ${activeItem.urgency === 'urgent' ? 'text-rose-200' : 'text-primary/90'}`}>
+              ({activeItem.expectedValue})
+            </span>
           </div>
         </div>
 

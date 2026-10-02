@@ -45,9 +45,9 @@ function OvoCoreAuthContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  
+
   const rawRedirect = searchParams.get('redirect') || '/';
-  const redirectTarget = rawRedirect === '/ovocore' ? '/' : rawRedirect;
+  const redirectTarget = rawRedirect === '/' ? '/' : rawRedirect;
 
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [isLoading, setIsLoading] = useState(false);
@@ -202,10 +202,10 @@ function OvoCoreAuthContent() {
 
       toast({
         title: "Farm Registered & Account Initialized!",
-        description: `Created your active farm '${farmName}'. Opening control room...`
+        description: `Created your active farm '${farmName}'. Opening profile...`
       });
 
-      router.replace(`/farm/${farmId}`);
+      router.replace(`/profile`);
     } catch (error: any) {
       console.error("Sign up error:", error);
       if (error.code === 'auth/email-already-in-use') {
@@ -270,10 +270,10 @@ function OvoCoreAuthContent() {
 
           toast({
             title: "User Profile Restored & Document Backfilled!",
-            description: `Backfilled your missing user document. Opening control room...`
+            description: `Backfilled your missing user document. Opening profile...`
           });
 
-          router.replace(`/farm/${farmId}`);
+          router.replace(`/profile`);
           return;
         } catch (signInErr: any) {
           console.warn("Backfill auto-login failed (password mismatch):", signInErr);
@@ -347,7 +347,7 @@ function OvoCoreAuthContent() {
           plan: 'trial'
         });
 
-        router.replace(`/farm/${farmId}`);
+        router.replace(`/profile`);
         return;
       }
 
@@ -415,13 +415,13 @@ function OvoCoreAuthContent() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center items-center p-4 sm:p-6 lg:p-8 relative overflow-hidden">
-      
+
       {/* Background Decorative Gradients */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[400px] h-[300px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-md w-full relative z-10 space-y-6">
-        
+
         {/* Brand Header */}
         <div className="text-center space-y-2">
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-400 text-slate-950 shadow-xl shadow-amber-500/20 mb-2">
@@ -440,22 +440,20 @@ function OvoCoreAuthContent() {
           <button
             type="button"
             onClick={() => setMode('signin')}
-            className={`py-2 text-xs font-extrabold rounded-xl transition-all ${
-              mode === 'signin'
+            className={`py-2 text-xs font-extrabold rounded-xl transition-all ${mode === 'signin'
                 ? 'bg-amber-500 text-slate-950 shadow-md'
                 : 'text-slate-400 hover:text-white'
-            }`}
+              }`}
           >
             Sign In
           </button>
           <button
             type="button"
             onClick={() => setMode('signup')}
-            className={`py-2 text-xs font-extrabold rounded-xl transition-all ${
-              mode === 'signup'
+            className={`py-2 text-xs font-extrabold rounded-xl transition-all ${mode === 'signup'
                 ? 'bg-amber-500 text-slate-950 shadow-md'
                 : 'text-slate-400 hover:text-white'
-            }`}
+              }`}
           >
             Register Farm
           </button>
@@ -664,6 +662,18 @@ function OvoCoreAuthContent() {
                       className="bg-slate-950 border-slate-800 text-white rounded-xl focus:border-amber-500 text-xs h-11"
                     />
                   </div>
+                </div>
+
+                <div className="flex items-start gap-2 pt-2 pb-1">
+                  <Input 
+                    type="checkbox" 
+                    required 
+                    id="dpa_consent"
+                    className="mt-1 w-4 h-4 rounded border-slate-700 bg-slate-900 accent-amber-500" 
+                  />
+                  <Label htmlFor="dpa_consent" className="text-[10px] text-slate-400 leading-tight">
+                    By proceeding, you consent to OvoCore processing your operational telemetry and contact data for automated advisory alerts and commercial proposals in compliance with the Kenya DPA, 2019.
+                  </Label>
                 </div>
 
                 <Button

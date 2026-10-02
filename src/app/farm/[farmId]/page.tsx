@@ -362,10 +362,10 @@ function FarmDashboardContent() {
             </Button>
           ) : (
             <Button
-              onClick={() => router.push('/ovocore')}
+              onClick={() => router.push('/')}
               className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl"
             >
-              Return to Workspace
+              Return to Portfolio Console
             </Button>
           )}
         </div>
@@ -379,7 +379,7 @@ function FarmDashboardContent() {
         <AlertTriangle className="w-12 h-12 text-rose-500 animate-bounce" />
         <h2 className="text-xl font-bold text-white">Farm Workspace Not Available</h2>
         <p className="text-slate-400 text-sm max-w-md text-center">{error || "The requested farm ID could not be loaded."}</p>
-        <Button onClick={() => router.push('/ovocore')} className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl">
+        <Button onClick={() => router.push('/')} className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl">
           Return to Portfolio Console
         </Button>
       </div>
@@ -413,7 +413,7 @@ function FarmDashboardContent() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 mt-4 md:mt-0">
           <Button
             onClick={() => setIsAddHouseOpen(true)}
             className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs rounded-xl h-10 px-4 shadow-lg shadow-amber-500/20"
@@ -442,6 +442,19 @@ function FarmDashboardContent() {
             className="border-slate-800 text-rose-300 hover:bg-rose-500/10 text-xs rounded-xl h-10"
           >
             <ShieldAlert className="w-4 h-4 mr-1.5" /> Log Vet Inspection
+          </Button>
+
+          <Button
+            onClick={() => {
+              if(confirm("DPA 2019 Right to Erasure: This will permanently purge all PII associated with this farm workspace. Aggregate data will be anonymized. Proceed?")) {
+                console.log("Purge Prospect Data Triggered");
+                // Implementation would go here
+              }
+            }}
+            variant="ghost"
+            className="border border-rose-900/50 text-rose-500 hover:bg-rose-950 hover:text-rose-400 text-[10px] rounded-xl h-10 px-3 uppercase tracking-wider font-bold"
+          >
+            Purge Data
           </Button>
         </div>
       </div>
@@ -480,16 +493,18 @@ function FarmDashboardContent() {
         <Card className="bg-slate-900 border-slate-800 text-white rounded-2xl shadow-lg">
           <CardHeader className="pb-2">
             <CardDescription className="text-slate-400 text-xs font-mono uppercase flex items-center justify-between">
-              Total Birds & Capacity <Egg className="w-4 h-4 text-amber-400" />
+              Total Birds & Capacity <Egg className="w-4 h-4 text-sky-400" />
             </CardDescription>
-            <CardTitle className="text-2xl font-black text-white">
+            <CardTitle className={`text-2xl font-black ${metrics.occupancyRate > 100 ? 'text-rose-500' : metrics.occupancyRate > 80 ? 'text-emerald-400' : 'text-sky-400'}`}>
               {metrics.totalBirds.toLocaleString()} <span className="text-xs text-slate-500 font-normal">/ {metrics.totalCapacity.toLocaleString()}</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Progress value={metrics.occupancyRate} className="h-1.5 bg-slate-800" />
+            <Progress value={Math.min(100, metrics.occupancyRate)} className="h-1.5 bg-slate-800" />
             <div className="flex justify-between text-[10px] font-mono text-slate-400">
-              <span>Occupancy: {metrics.occupancyRate.toFixed(1)}%</span>
+              <span className={metrics.occupancyRate > 100 ? 'text-rose-500 font-bold' : metrics.occupancyRate > 80 ? 'text-emerald-400 font-bold' : ''}>
+                Occupancy: {metrics.occupancyRate.toFixed(1)}%
+              </span>
               <span>{houses.length} Houses</span>
             </div>
           </CardContent>
@@ -500,16 +515,16 @@ function FarmDashboardContent() {
             <CardDescription className="text-slate-400 text-xs font-mono uppercase flex items-center justify-between">
               Silo Feed Inventory <Wheat className="w-4 h-4 text-amber-400" />
             </CardDescription>
-            <CardTitle className="text-2xl font-black text-amber-400">
+            <CardTitle className={`text-2xl font-black ${metrics.daysOfFeedRemaining <= 3 ? 'text-rose-500 animate-pulse' : metrics.daysOfFeedRemaining <= 7 ? 'text-amber-400' : 'text-emerald-400'}`}>
               {metrics.totalSiloFeedKg.toLocaleString()} <span className="text-xs text-slate-400 font-normal">kg</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-1">
             <div className="flex items-center justify-between text-xs font-bold">
-              <span className={metrics.daysOfFeedRemaining <= 3 ? "text-rose-400 font-black animate-pulse" : "text-emerald-400"}>
+              <span className={metrics.daysOfFeedRemaining <= 3 ? "text-rose-500 font-black" : metrics.daysOfFeedRemaining <= 7 ? "text-amber-400" : "text-emerald-400"}>
                 {metrics.daysOfFeedRemaining <= 900 ? `${metrics.daysOfFeedRemaining} Days Remaining` : 'Stock Active'}
               </span>
-              <Link href={`/farm/${farmId}/inventory`} className="text-[10px] text-amber-400 hover:underline">
+              <Link href={`/farm/${farmId}/inventory`} className="text-[10px] text-amber-400 hover:text-amber-300 hover:underline">
                 Manage Silos &rarr;
               </Link>
             </div>
@@ -519,14 +534,14 @@ function FarmDashboardContent() {
         <Card className="bg-slate-900 border-slate-800 text-white rounded-2xl shadow-lg">
           <CardHeader className="pb-2">
             <CardDescription className="text-slate-400 text-xs font-mono uppercase flex items-center justify-between">
-              Active Flocks <Layers className="w-4 h-4 text-amber-400" />
+              Active Flocks <Layers className="w-4 h-4 text-indigo-400" />
             </CardDescription>
-            <CardTitle className="text-2xl font-black text-white">
+            <CardTitle className={`text-2xl font-black ${metrics.activeFlocksCount > 0 ? 'text-indigo-400' : 'text-slate-500'}`}>
               {metrics.activeFlocksCount} <span className="text-xs text-slate-500 font-normal">Batches</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-xs text-slate-400">
+            <p className={`text-xs font-medium ${metrics.activeFlocksCount > 0 ? 'text-indigo-300' : 'text-slate-400'}`}>
               {metrics.activeFlocksCount === 0 ? "No flock currently stocked" : "Active production layers"}
             </p>
           </CardContent>
@@ -535,14 +550,14 @@ function FarmDashboardContent() {
         <Card className="bg-slate-900 border-slate-800 text-white rounded-2xl shadow-lg">
           <CardHeader className="pb-2">
             <CardDescription className="text-slate-400 text-xs font-mono uppercase flex items-center justify-between">
-              Cashflow & Ledger <Coins className="w-4 h-4 text-amber-400" />
+              Cashflow & Ledger <Coins className="w-4 h-4 text-emerald-500" />
             </CardDescription>
-            <CardTitle className="text-2xl font-black text-white">
-              Finance <span className="text-xs text-slate-500 font-normal">Center</span>
+            <CardTitle className="text-2xl font-black text-emerald-400">
+              Finance <span className="text-xs text-emerald-600/50 font-normal">Center</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Link href={`/farm/${farmId}/finance`} className="text-xs font-bold text-amber-400 hover:underline flex items-center gap-1">
+            <Link href={`/farm/${farmId}/finance`} className="text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:underline flex items-center gap-1">
               View Egg Revenue & Opex &rarr;
             </Link>
           </CardContent>
