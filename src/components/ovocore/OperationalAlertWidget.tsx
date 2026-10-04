@@ -4,11 +4,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, AlertTriangle, CheckCircle2, ChevronRight, Syringe, Wheat, Flame, HeartPulse, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { POULTRY_PROTOCOLS, ProtocolTask } from './FlockOperationsTracker';
+import { getPoultryProtocols, ProtocolTask } from './FlockOperationsTracker';
 import { Progress } from '@/components/ui/progress';
 
 interface OperationalAlertWidgetProps {
   placementDate: string;
+  flockType?: string;
 }
 
 const CategoryIcon = ({ category, className }: { category: ProtocolTask['category'], className?: string }) => {
@@ -21,7 +22,7 @@ const CategoryIcon = ({ category, className }: { category: ProtocolTask['categor
   }
 };
 
-export const OperationalAlertWidget: React.FC<OperationalAlertWidgetProps> = ({ placementDate }) => {
+export const OperationalAlertWidget: React.FC<OperationalAlertWidgetProps> = ({ placementDate, flockType = 'Layers' }) => {
   const [activeTask, setActiveTask] = useState<ProtocolTask | null>(null);
   const [isDismissed, setIsDismissed] = useState(false);
   const [flockAgeDays, setFlockAgeDays] = useState(0);
@@ -43,7 +44,8 @@ export const OperationalAlertWidget: React.FC<OperationalAlertWidgetProps> = ({ 
     setFlockAgeDays(currentAge);
 
     // Find first task that is currently due
-    const currentTask = POULTRY_PROTOCOLS.find(
+    const protocols = getPoultryProtocols(flockType);
+    const currentTask = protocols.find(
       t => currentAge >= t.dayMin && currentAge <= t.dayMax
     );
 
@@ -54,7 +56,7 @@ export const OperationalAlertWidget: React.FC<OperationalAlertWidgetProps> = ({ 
     } else if (!currentTask) {
       setActiveTask(null);
     }
-  }, [placementDate, activeTask]);
+  }, [placementDate, activeTask, flockType]);
 
   // Real-time Countdown Timer
   useEffect(() => {
@@ -107,7 +109,7 @@ export const OperationalAlertWidget: React.FC<OperationalAlertWidgetProps> = ({ 
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 50, scale: 0.9 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className={`relative overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-md ${
+            className={`relative overflow-hidden rounded-2xl border shadow-2xl  ${
               isCritical 
                 ? 'bg-rose-950/80 border-rose-500/50 shadow-rose-500/20' 
                 : 'bg-emerald-950/80 border-emerald-500/50 shadow-emerald-500/20'

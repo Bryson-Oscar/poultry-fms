@@ -123,7 +123,12 @@ export function AddFlockModal({ farmId, houseId, initialHouseId, isOpen, onClose
 
     setIsSubmitting(true);
     try {
-      const flockRef = doc(collection(db, `farms/${farmId}/houses/${houseId}/flocks`));
+      const targetHouseId = houseId || initialHouseId;
+      if (!targetHouseId) {
+        throw new Error("No house selected or provided for this flock.");
+      }
+      
+      const flockRef = doc(collection(db, `farms/${farmId}/houses/${targetHouseId}/flocks`));
       const flockId = flockRef.id;
 
       const housedDate = new Date(housedDateString);
@@ -159,7 +164,7 @@ export function AddFlockModal({ farmId, houseId, initialHouseId, isOpen, onClose
       await setDoc(flockRef, flockPayload);
 
       // 2. Point the parent house to this newly active flock
-      await updateDoc(doc(db, `farms/${farmId}/houses/${houseId}`), {
+      await updateDoc(doc(db, `farms/${farmId}/houses/${targetHouseId}`), {
         currentFlockId: flockId,
         updatedAt: serverTimestamp()
       });

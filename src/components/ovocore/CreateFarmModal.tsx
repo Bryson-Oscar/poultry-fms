@@ -93,7 +93,7 @@ export default function CreateFarmModal({ isOpen, onClose, onSuccess }: CreateFa
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-in fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/90  animate-in fade-in">
       <Card className="max-w-lg w-full rounded-3xl border-border/80 shadow-2xl overflow-hidden bg-card text-card-foreground">
         <CardHeader className="bg-muted/40 p-6 border-b border-border/60 flex flex-row items-center justify-between">
           <div>

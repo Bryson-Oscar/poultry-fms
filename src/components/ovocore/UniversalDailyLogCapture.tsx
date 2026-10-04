@@ -63,7 +63,7 @@ import {
   Clock
 } from 'lucide-react';
 
-export type EnterpriseType = 'commercial_layers' | 'broilers' | 'improved_kienyeji';
+export type EnterpriseType = 'commercial_layers' | 'broilers' | 'improved_kienyeji' | 'breeders';
 
 interface DiagnosticResult {
   type: 'warning' | 'critical' | 'success';
@@ -199,6 +199,9 @@ export default function UniversalDailyLogCapture() {
     }
     if (cat.includes('kienyeji') || breed.includes('kari') || breed.includes('kuroiler') || breed.includes('kenbro')) {
       return 'improved_kienyeji';
+    }
+    if (cat.includes('breeder') || breed.includes('breeder')) {
+      return 'breeders';
     }
     return 'commercial_layers';
   }, [flock]);
@@ -410,6 +413,17 @@ export default function UniversalDailyLogCapture() {
         { title: "Fowl Pox Wing-Web Inoculation", target: "Week 6 - 8", targetDay: 42, desc: "Wing-web puncture. Inspect take swelling 7 days post-administration." },
         { title: "Cockerel Separation & Selection", target: "Week 14 - 16", targetDay: 98, desc: "Sort males for live meat market fattening; transition females to grower mash." },
         { title: "Routine Anthelmintic Deworming", target: "Every 8 Weeks", targetDay: 56, desc: "Administer Levamisole/Piperazine to combat soil-borne nematodes." },
+      ];
+    }
+
+    if (enterpriseType === 'breeders') {
+      return [
+        { title: "Brooder Setup & Sexing Verification", target: "Day 1 - 3", targetDay: 1, desc: "Verify vent sexing and ensure 33°C at floor level. Initiate lighting program." },
+        { title: "Newcastle + IB Primer", target: "Day 7", targetDay: 7, desc: "Ocular or drinking water administration with cold-chain verified vials." },
+        { title: "Fowl Cholera & Coryza Primer", target: "Week 10", targetDay: 70, desc: "Administer intramuscularly to build flock immunity pre-lay." },
+        { title: "Pre-Lay Breeder Mash Transition", target: "Week 18 - 20", targetDay: 126, desc: "Transition to breeder mash formulated for fertility and hatchability." },
+        { title: "Photoperiod Stimulation (15hrs)", target: "Week 21+", targetDay: 147, desc: "Step up day length to stimulate mating behavior and egg production." },
+        { title: "Routine Salmonella Pullorum Screening", target: "Every 12 Weeks", targetDay: 84, desc: "Mandatory blood screening to certify hatching eggs are pullorum-free." },
       ];
     }
 

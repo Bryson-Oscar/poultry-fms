@@ -86,7 +86,7 @@ export function PwaInstallPrompt() {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-sm z-50 animate-in slide-in-from-bottom-5">
-      <Card className="bg-slate-900/95 border-amber-500/40 text-white rounded-3xl p-4 shadow-2xl backdrop-blur-xl border flex flex-col space-y-3">
+      <Card className="bg-card border-amber-500/40 text-white rounded-3xl p-4 shadow-2xl  border flex flex-col space-y-3">
         
         {/* Header Bar */}
         <div className="flex items-start justify-between">

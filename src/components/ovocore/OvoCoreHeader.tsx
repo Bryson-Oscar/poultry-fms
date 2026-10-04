@@ -19,8 +19,16 @@ import {
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
+
+export interface OvoCoreAlert {
+  id: string;
+  title: string;
+  description: string;
+  href: string;
+}
 
 export interface OvoCoreHeaderProps {
   farmId?: string;
@@ -28,7 +36,7 @@ export interface OvoCoreHeaderProps {
   ownerPhone?: string;
   isPendingSync?: boolean;
   activeFlockCount?: number;
-  criticalAlertCount?: number;
+  alerts?: OvoCoreAlert[];
   onTriggerAdvisor?: () => void;
 }
 
@@ -38,7 +46,7 @@ export function OvoCoreHeader({
   ownerPhone,
   isPendingSync = false,
   activeFlockCount = 0,
-  criticalAlertCount = 0,
+  alerts = [],
   onTriggerAdvisor
 }: OvoCoreHeaderProps) {
   const pathname = usePathname();
@@ -126,13 +134,40 @@ export function OvoCoreHeader({
             </Button>
           ) : null}
 
-          {criticalAlertCount > 0 && (
-            <div className="relative">
-              <Button size="icon" variant="ghost" className="text-rose-400 hover:bg-rose-500/10 rounded-xl h-9 w-9">
-                <Bell className="w-4 h-4" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 animate-ping" />
-              </Button>
-            </div>
+          {alerts.length > 0 && (
+            <Popover>
+              <PopoverTrigger asChild>
+                <div className="relative">
+                  <Button size="icon" variant="ghost" className="text-rose-400 hover:bg-rose-500/10 rounded-xl h-9 w-9">
+                    <Bell className="w-4 h-4" />
+                    <span className="absolute top-0 right-0 w-3.5 h-3.5 flex items-center justify-center text-[8px] font-bold text-white rounded-full bg-rose-500 ring-2 ring-slate-950">
+                      {alerts.length}
+                    </span>
+                  </Button>
+                </div>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 bg-card border-border p-0 rounded-2xl shadow-2xl mt-2 overflow-hidden" align="end">
+                <div className="p-3 border-b border-border/50 bg-muted/20">
+                  <h3 className="font-bold text-sm">Notifications</h3>
+                </div>
+                <div className="max-h-[300px] overflow-y-auto custom-scrollbar p-2 space-y-1">
+                  {alerts.map((alert) => (
+                    <div key={alert.id} className="p-2 rounded-xl hover:bg-muted/40 transition-colors flex items-start gap-3">
+                      <div className="mt-0.5 rounded-full bg-rose-500/10 p-1.5 shrink-0">
+                        <ShieldCheck className="w-3.5 h-3.5 text-rose-500" />
+                      </div>
+                      <div className="flex-1 space-y-1">
+                        <p className="text-xs font-bold leading-tight">{alert.title}</p>
+                        <p className="text-[10px] text-muted-foreground leading-tight">{alert.description}</p>
+                        <Link href={alert.href} className="text-[10px] text-amber-500 font-bold hover:underline inline-block mt-1">
+                          Take Action →
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
           )}
 
           <Button

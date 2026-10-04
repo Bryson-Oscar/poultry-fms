@@ -629,7 +629,7 @@ function FinanceContent() {
                         </div>
 
                         {/* Financial Breakdown Grid */}
-                        <div className="grid grid-cols-3 gap-2 bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs font-mono text-center">
+                        <div className="grid grid-cols-3 gap-2 bg-card p-3 rounded-xl border border-slate-800 text-xs font-mono text-center">
                           <div>
                             <span className="text-[10px] text-slate-400 block uppercase">Total Order</span>
                             <span className="font-extrabold text-white text-sm">KSh {totalVal.toLocaleString()}</span>
@@ -754,7 +754,7 @@ function FinanceContent() {
                         </div>
 
                         {/* Financial Breakdown Grid */}
-                        <div className="grid grid-cols-3 gap-2 bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs font-mono text-center">
+                        <div className="grid grid-cols-3 gap-2 bg-card p-3 rounded-xl border border-slate-800 text-xs font-mono text-center">
                           <div>
                             <span className="text-[10px] text-slate-400 block uppercase">Total Harvest</span>
                             <span className="font-extrabold text-white text-sm">KSh {totalVal.toLocaleString()}</span>
@@ -879,7 +879,7 @@ function FinanceContent() {
                         </div>
 
                         {/* Financial Breakdown Grid */}
-                        <div className="grid grid-cols-3 gap-2 bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs font-mono text-center">
+                        <div className="grid grid-cols-3 gap-2 bg-card p-3 rounded-xl border border-slate-800 text-xs font-mono text-center">
                           <div>
                             <span className="text-[10px] text-slate-400 block uppercase">Total Sale</span>
                             <span className="font-extrabold text-white text-sm">KSh {totalVal.toLocaleString()}</span>

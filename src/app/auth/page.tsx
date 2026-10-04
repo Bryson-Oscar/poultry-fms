@@ -40,6 +40,7 @@ import {
   KeyRound
 } from 'lucide-react';
 import Link from 'next/link';
+import { BlueMotionOverlay } from '@/components/ovocore/BlueMotionOverlay';
 
 function OvoCoreAuthContent() {
   const router = useRouter();
@@ -49,7 +50,10 @@ function OvoCoreAuthContent() {
   const rawRedirect = searchParams.get('redirect') || '/';
   const redirectTarget = rawRedirect === '/' ? '/' : rawRedirect;
 
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const inviteCode = searchParams.get('inviteCode');
+  const invitedFarmName = searchParams.get('farmName');
+
+  const [mode, setMode] = useState<'signin' | 'signup'>(searchParams.get('mode') === 'signup' ? 'signup' : 'signin');
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -63,7 +67,7 @@ function OvoCoreAuthContent() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [companyName, setCompanyName] = useState('');
+  const [companyName, setCompanyName] = useState(invitedFarmName || '');
   const [selectedRole, setSelectedRole] = useState<'creator' | 'manager' | 'operator'>('creator');
   const [flockFocus, setFlockFocus] = useState<'commercial_layers' | 'broilers' | 'dual_purpose_kienyeji'>('commercial_layers');
 
@@ -415,9 +419,10 @@ function OvoCoreAuthContent() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center items-center p-4 sm:p-6 lg:p-8 relative overflow-hidden">
+      <BlueMotionOverlay />
 
       {/* Background Decorative Gradients */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none z-0" />
       <div className="absolute bottom-10 right-10 w-[400px] h-[300px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-md w-full relative z-10 space-y-6">
@@ -436,7 +441,7 @@ function OvoCoreAuthContent() {
         </div>
 
         {/* Auth Toggle Tabs */}
-        <div className="grid grid-cols-2 p-1.5 bg-slate-900/90 border border-slate-800 rounded-2xl">
+        <div className="grid grid-cols-2 p-1.5 bg-card border border-slate-800 rounded-2xl">
           <button
             type="button"
             onClick={() => setMode('signin')}
@@ -455,12 +460,12 @@ function OvoCoreAuthContent() {
                 : 'text-slate-400 hover:text-white'
               }`}
           >
-            Register Farm
+            {invitedFarmName ? 'Join Enterprise' : 'Register Farm'}
           </button>
         </div>
 
         {/* Main Form Card */}
-        <Card className="bg-slate-900/90 border-slate-800 text-white shadow-2xl rounded-3xl overflow-hidden backdrop-blur-xl">
+        <Card className="bg-card border-slate-800 text-white shadow-2xl rounded-3xl overflow-hidden ">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg font-bold flex items-center gap-2">
               {mode === 'signin' ? (
@@ -469,14 +474,16 @@ function OvoCoreAuthContent() {
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-4 h-4 text-amber-400" /> Create Enterprise Account
+                  <Sparkles className="w-4 h-4 text-amber-400" /> {invitedFarmName ? `Join ${invitedFarmName}` : 'Create Enterprise Account'}
                 </>
               )}
             </CardTitle>
             <CardDescription className="text-xs text-slate-400">
               {mode === 'signin'
                 ? 'Enter your credentials to access your active poultry telemetry & control room.'
-                : 'Register your farm management account to monitor flocks, feeds, and financial metrics.'}
+                : invitedFarmName 
+                  ? 'Register an account to securely access the enterprise telemetry & control room.' 
+                  : 'Register your farm management account to monitor flocks, feeds, and financial metrics.'}
             </CardDescription>
           </CardHeader>
 
@@ -659,19 +666,20 @@ function OvoCoreAuthContent() {
                       placeholder="Kuku Bora Farm"
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
-                      className="bg-slate-950 border-slate-800 text-white rounded-xl focus:border-amber-500 text-xs h-11"
+                      disabled={!!inviteCode}
+                      className="bg-slate-950 border-slate-800 text-white rounded-xl focus:border-amber-500 text-xs h-11 disabled:opacity-50"
                     />
                   </div>
                 </div>
 
                 <div className="flex items-start gap-2 pt-2 pb-1">
-                  <Input 
+                  <input 
                     type="checkbox" 
                     required 
                     id="dpa_consent"
-                    className="mt-1 w-4 h-4 rounded border-slate-700 bg-slate-900 accent-amber-500" 
+                    className="mt-1 w-4 h-4 rounded border-slate-700 bg-slate-900 accent-amber-500 cursor-pointer" 
                   />
-                  <Label htmlFor="dpa_consent" className="text-[10px] text-slate-400 leading-tight">
+                  <Label htmlFor="dpa_consent" className="text-[10px] text-slate-400 leading-tight cursor-pointer">
                     By proceeding, you consent to OvoCore processing your operational telemetry and contact data for automated advisory alerts and commercial proposals in compliance with the Kenya DPA, 2019.
                   </Label>
                 </div>
@@ -686,7 +694,7 @@ function OvoCoreAuthContent() {
                   ) : (
                     <CheckCircle2 className="w-4 h-4 mr-2" />
                   )}
-                  Create Account & Register Farm
+                  {invitedFarmName ? 'Create Account & Join' : 'Create Account & Register Farm'}
                 </Button>
               </form>
             )}
@@ -730,7 +738,7 @@ function OvoCoreAuthContent() {
 
       {/* Password Reset Modal */}
       {isResetModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-background  flex items-center justify-center p-4">
           <Card className="max-w-md w-full bg-slate-900 border-slate-800 text-white rounded-3xl shadow-2xl p-6 space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 border border-amber-500/20">

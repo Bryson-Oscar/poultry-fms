@@ -6,6 +6,7 @@ import { db, auth } from '@/lib/firebase';
 import { doc, collection, onSnapshot } from 'firebase/firestore';
 import type { Farm, House, Flock, FeedBatch } from '@/services/ovocore/firebaseSchema';
 import { OvoCoreHeader } from '@/components/ovocore/OvoCoreHeader';
+import { MobileBottomNav } from '@/components/ovocore/MobileBottomNav';
 import { 
   dispatchWhatsAppAdvisor, 
   FarmTelemetryContext 
@@ -106,6 +107,26 @@ export default function IndependentFarmLayout({ children }: { children: React.Re
   const handleTriggerAdvisor = () => {
     dispatchWhatsAppAdvisor(telemetry);
   };
+  const computedAlerts = useMemo(() => {
+    const alerts = [];
+    if (telemetry.daysOfFeed <= 3) {
+      alerts.push({
+        id: 'low-feed',
+        title: 'Low Feed Stock',
+        description: `You have ${telemetry.daysOfFeed} days of feed remaining for your active flocks.`,
+        href: `/farm/${farmId}/inventory`
+      });
+    }
+    if (telemetry.mortalityRatePct > 1.5) {
+      alerts.push({
+        id: 'high-mortality',
+        title: 'High Mortality Rate',
+        description: `Your aggregate mortality rate is ${telemetry.mortalityRatePct}%. Check biosecurity.`,
+        href: `/farm/${farmId}`
+      });
+    }
+    return alerts;
+  }, [telemetry, farmId]);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
@@ -115,12 +136,13 @@ export default function IndependentFarmLayout({ children }: { children: React.Re
         ownerPhone={telemetry.ownerPhone}
         isPendingSync={isPendingSync}
         activeFlockCount={telemetry.activeFlockCount}
-        criticalAlertCount={telemetry.daysOfFeed <= 3 ? 1 : 0}
+        alerts={computedAlerts}
         onTriggerAdvisor={handleTriggerAdvisor}
       />
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8">
         {children}
       </main>
+      <MobileBottomNav farmId={farmId} />
     </div>
   );
 }

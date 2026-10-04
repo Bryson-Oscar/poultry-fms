@@ -35,6 +35,7 @@ export interface AddHouseModalProps {
   isOpen?: boolean;
   onClose?: () => void;
   trigger?: React.ReactNode;
+  onSuccess?: (houseId: string) => void;
 }
 
 // Density standards based on house mechanics and ventilation architecture (birds per square meter)
@@ -56,7 +57,7 @@ const DENSITY_STANDARDS = {
   }
 };
 
-export function AddHouseModal({ farmId, isOpen, onClose, trigger }: AddHouseModalProps) {
+export function AddHouseModal({ farmId, isOpen, onClose, trigger, onSuccess }: AddHouseModalProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const open = isOpen !== undefined ? isOpen : internalOpen;
   const setOpen = (val: boolean) => {
@@ -234,7 +235,7 @@ export function AddHouseModal({ farmId, isOpen, onClose, trigger }: AddHouseModa
 
     setIsSubmitting(true);
     try {
-      await addDoc(collection(db, `farms/${farmId}/houses`), {
+      const houseRef = await addDoc(collection(db, `farms/${farmId}/houses`), {
         houseName: formData.houseName.trim(),
         houseType: formData.houseType,
         capacityBirds: finalCapacity,
@@ -273,6 +274,7 @@ export function AddHouseModal({ farmId, isOpen, onClose, trigger }: AddHouseModa
         biosecurityLevel: 'Standard Level 2',
       });
       setIsCapacityOverridden(false);
+      if (onSuccess) onSuccess(houseRef.id);
     } catch (error) {
       console.error(error);
       toast({

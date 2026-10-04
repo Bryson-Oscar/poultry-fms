@@ -29,7 +29,7 @@ export function BankDossierAuthorization({ farmId }: BankDossierAuthorizationPro
         setLoading(false);
         toast({
           title: "Bank Dossier Generated",
-          description: "Immutable financial and biological audit secured."
+          description: "Immutable financial and biological audit secured. Downloading PDF..."
         });
       }, 2500);
       
@@ -110,9 +110,20 @@ export function BankDossierAuthorization({ farmId }: BankDossierAuthorizationPro
             <div className="bg-emerald-950/30 border border-emerald-900/50 rounded-xl p-3 flex items-center justify-between">
               <div className="truncate pr-4">
                 <p className="text-[10px] font-bold text-emerald-500 uppercase">Secure Bank Verification Link</p>
-                <p className="text-xs font-mono text-slate-300 truncate mt-0.5">{dossier.verificationUrl}</p>
+                <a 
+                  href={dossier.verificationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-mono text-emerald-400 hover:text-emerald-300 hover:underline truncate mt-0.5 block"
+                >
+                  {dossier.verificationUrl}
+                </a>
               </div>
-              <Button size="sm" className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl h-8 shrink-0">
+              <Button 
+                size="sm" 
+                className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl h-8 shrink-0 print:hidden"
+                onClick={() => window.print()}
+              >
                 <DownloadCloud className="w-3.5 h-3.5 mr-1.5" /> PDF
               </Button>
             </div>

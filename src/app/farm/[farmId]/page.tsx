@@ -59,15 +59,19 @@ import { AddFlockModal } from '@/components/ovocore/AddFlockModal';
 import { LogComplianceEventModal } from '@/components/ovocore/LogComplianceEventModal';
 import { RecordBroilerSaleModal } from '@/components/ovocore/RecordBroilerSaleModal';
 import { AddEggSaleModal } from '@/components/ovocore/AddEggSaleModal';
+import { AddFeedBatchModal } from '@/components/ovocore/AddFeedBatchModal';
 import { OvoCoreUpsell } from '@/components/ovocore/OvoCoreUpsell';
 import { FarmOperatorsModal } from '@/components/ovocore/FarmOperatorsModal';
 import FarmTeamOnboardingModal from '@/components/ovocore/FarmTeamOnboardingModal';
 import { PeckingChickenLoader } from '@/components/ovocore/PeckingChickenLoader';
+import { WeatherWidget } from '@/components/ovocore/WeatherWidget';
 import { useToast } from '@/hooks/use-toast';
 import { PredictiveOperationsBanner } from '@/components/ovocore/PredictiveOperationsBanner';
+import { BiologicalPerformanceSettlement } from '@/components/ovocore/BiologicalPerformanceSettlement';
 import { FarmSetupWizardBanner } from '@/components/ovocore/FarmSetupWizardBanner';
 import { SanitaryClearanceModal } from '@/components/ovocore/SanitaryClearanceModal';
 import { FeedQualityInspectorModal } from '@/components/ovocore/FeedQualityInspectorModal';
+import { DailyLogTelemetryModal } from '@/components/ovocore/DailyLogTelemetryModal';
 import type { HouseSanitationState } from '@/types/ovocoreAutonomy';
 
 interface HouseWithFlock extends House {
@@ -103,7 +107,8 @@ function FarmDashboardContent() {
   const [isSanitaryModalOpen, setIsSanitaryModalOpen] = useState(false);
   const [selectedHouseForSanitation, setSelectedHouseForSanitation] = useState<HouseWithFlock | null>(null);
   const [isFeedInspectorOpen, setIsFeedInspectorOpen] = useState(false);
-
+  const [isAddFeedBatchOpen, setIsAddFeedBatchOpen] = useState(false);
+  const [telemetryState, setTelemetryState] = useState<{ houseId: string; flockId: string } | null>(null);
   // Filter state
   const [houseFilter, setHouseFilter] = useState<'all' | 'active' | 'vacant'>('all');
   const [copiedId, setCopiedId] = useState(false);
@@ -180,7 +185,7 @@ function FarmDashboardContent() {
 
     // 1. Real-time Farm Metadata Listener
     const farmRef = doc(db, 'farms', farmId);
-    updateDoc(farmRef, { lastActiveAt: serverTimestamp() }).catch(() => {});
+    updateDoc(farmRef, { lastActiveAt: serverTimestamp() }).catch(() => { });
     unsubFarm = onSnapshot(
       farmRef,
       { includeMetadataChanges: true },
@@ -333,6 +338,12 @@ function FarmDashboardContent() {
     setIsPlaceFlockOpen(true);
   };
 
+  useEffect(() => {
+    if (accessResult && !accessResult.hasAccess && accessResult.assignedFarmId) {
+      router.replace(`/farm/${accessResult.assignedFarmId}`);
+    }
+  }, [accessResult, router]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-slate-100">
@@ -392,7 +403,7 @@ function FarmDashboardContent() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <Link href="/ovocore" className="text-slate-400 hover:text-amber-400 transition-colors text-xs flex items-center gap-1 font-bold">
+            <Link href="/" className="text-slate-400 hover:text-amber-400 transition-colors text-xs flex items-center gap-1 font-bold">
               <ArrowLeft className="w-3.5 h-3.5" /> All Farms
             </Link>
             <span className="text-slate-600">•</span>
@@ -409,7 +420,7 @@ function FarmDashboardContent() {
             )}
           </h1>
           <p className="text-xs text-slate-400 font-mono">
-            ID: {farm.id} • Owner: <span className="text-slate-200">{farm.ownerName || farm.ownerContact?.name || 'Farm Manager'}</span>
+            ID: {farm.id} • Owner: <span className="text-slate-200">{farm.ownerName || farm.ownerContact?.name || 'Farm Manager'} ({farm.flockType})</span>
           </p>
         </div>
 
@@ -445,10 +456,27 @@ function FarmDashboardContent() {
           </Button>
 
           <Button
-            onClick={() => {
-              if(confirm("DPA 2019 Right to Erasure: This will permanently purge all PII associated with this farm workspace. Aggregate data will be anonymized. Proceed?")) {
-                console.log("Purge Prospect Data Triggered");
-                // Implementation would go here
+            onClick={async () => {
+              if (confirm("DPA 2019 Right to Erasure: This will permanently purge all PII associated with this farm workspace. Aggregate data will be anonymized. Proceed?")) {
+                try {
+                  const { doc, updateDoc, serverTimestamp } = await import('firebase/firestore');
+                  await updateDoc(doc(db, 'farms', farmId), {
+                    isPurged: true,
+                    status: 'purged',
+                    purgedAt: serverTimestamp(),
+                  });
+                  toast({
+                    title: 'Data Purged successfully',
+                    description: 'Your PII and farm data have been purged. You will now be logged out.',
+                    variant: 'destructive',
+                  });
+                  setTimeout(async () => {
+                    await auth.signOut();
+                    router.push('/auth');
+                  }, 2500);
+                } catch (error: any) {
+                  toast({ title: 'Purge Failed', description: error.message, variant: 'destructive' });
+                }
               }
             }}
             variant="ghost"
@@ -488,8 +516,15 @@ function FarmDashboardContent() {
         }}
       />
 
+      {/* Biological Hurdle Settlement Banner */}
+      <BiologicalPerformanceSettlement
+        farmId={farmId}
+        flockId={houses[0]?.currentFlockId || "FLOCK-TEST-001"}
+        enterpriseType={operationalMode.farmType === 'broilers' ? 'broilers' : 'layers'}
+      />
+
       {/* Biosecurity & Telemetry Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <Card className="bg-slate-900 border-slate-800 text-white rounded-2xl shadow-lg">
           <CardHeader className="pb-2">
             <CardDescription className="text-slate-400 text-xs font-mono uppercase flex items-center justify-between">
@@ -562,6 +597,8 @@ function FarmDashboardContent() {
             </Link>
           </CardContent>
         </Card>
+
+        <WeatherWidget location={typeof farm?.location === 'string' ? farm.location : farm?.location?.address || farm?.name} />
       </div>
 
       {/* Production Houses List */}
@@ -681,17 +718,13 @@ function FarmDashboardContent() {
 
                   {house.activeFlock && (
                     <CardFooter className="bg-slate-950 border-t border-slate-800 p-3">
-                      <Link
-                        href={`/flock/${farmId}/${house.id}/${house.activeFlock.id}`}
-                        className="w-full"
+                      <Button
+                        onClick={() => setTelemetryState({ houseId: house.id, flockId: house.activeFlock!.id })}
+                        variant="outline"
+                        className="w-full border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-amber-400 font-bold text-xs rounded-xl h-9"
                       >
-                        <Button
-                          variant="outline"
-                          className="w-full border-slate-800 text-slate-200 hover:bg-slate-900 hover:text-amber-400 font-bold text-xs rounded-xl h-9"
-                        >
-                          <Activity className="w-3.5 h-3.5 mr-1.5" /> View Daily Log & Telemetry
-                        </Button>
-                      </Link>
+                        <Activity className="w-3.5 h-3.5 mr-1.5" /> View Daily Log & Telemetry
+                      </Button>
                     </CardFooter>
                   )}
                 </Card>
@@ -707,6 +740,10 @@ function FarmDashboardContent() {
           isOpen={isAddHouseOpen}
           onClose={() => setIsAddHouseOpen(false)}
           farmId={farmId}
+          onSuccess={(newHouseId: string) => {
+            setSelectedHouseForFlock({ id: newHouseId } as HouseWithFlock);
+            setIsPlaceFlockOpen(true);
+          }}
         />
       )}
 
@@ -719,6 +756,15 @@ function FarmDashboardContent() {
           }}
           farmId={farmId}
           initialHouseId={selectedHouseForFlock?.id}
+          onSuccess={() => setIsAddFeedBatchOpen(true)}
+        />
+      )}
+
+      {isAddFeedBatchOpen && (
+        <AddFeedBatchModal
+          isOpen={isAddFeedBatchOpen}
+          onClose={() => setIsAddFeedBatchOpen(false)}
+          farmId={farmId}
         />
       )}
 
@@ -779,6 +825,16 @@ function FarmDashboardContent() {
               description: `Moisture: ${qa.moisturePct}%, Protein: ${qa.crudeProteinPct}%, Aflatoxin: ${qa.aflatoxinPpb} ppb.`
             });
           }}
+        />
+      )}
+
+      {telemetryState && (
+        <DailyLogTelemetryModal
+          farmId={farmId}
+          houseId={telemetryState.houseId}
+          flockId={telemetryState.flockId}
+          isOpen={!!telemetryState}
+          onClose={() => setTelemetryState(null)}
         />
       )}
     </div>

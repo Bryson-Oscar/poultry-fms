@@ -143,7 +143,7 @@ function FeedInventoryContent() {
 
         if (isMounted) {
           setTotalLiveBirds(totalBirds);
-          setDailyFlockFeedNeedKg(totalDailyKg > 0 ? totalDailyKg : (totalBirds > 0 ? totalBirds * 0.115 : 600));
+          setDailyFlockFeedNeedKg(totalDailyKg);
         }
       } catch (err) {
         console.warn("Error computing bird feed demand:", err);
@@ -166,8 +166,8 @@ function FeedInventoryContent() {
     const totalInvestedKES = batches.reduce((acc, b) => acc + ((b.quantityReceivedKg || 0) * (b.costPerKg || 0)), 0);
     const remainingValueKES = activeBatches.reduce((acc, b) => acc + ((b.quantityRemainingKg || 0) * (b.costPerKg || 0)), 0);
 
-    const dailyNeed = dailyFlockFeedNeedKg > 0 ? dailyFlockFeedNeedKg : 600; // default 600kg for 5000 birds
-    const daysOfFeed = Math.floor(totalStoredFeedKg / dailyNeed);
+    const dailyNeed = dailyFlockFeedNeedKg;
+    const daysOfFeed = dailyNeed > 0 ? Math.floor(totalStoredFeedKg / dailyNeed) : (totalStoredFeedKg > 0 ? Infinity : 0);
 
     return {
       activeBatches,
@@ -250,12 +250,16 @@ function FeedInventoryContent() {
               Silo Feed Runway <Clock className="w-4 h-4 text-amber-400" />
             </CardDescription>
             <CardTitle className="text-2xl font-black text-white">
-              {telemetry.daysOfFeed} <span className="text-xs text-slate-400 font-normal">Days Remaining</span>
+              {telemetry.daysOfFeed === Infinity ? '∞' : telemetry.daysOfFeed} <span className="text-xs text-slate-400 font-normal">Days Remaining</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-1">
             <span className={telemetry.daysOfFeed <= 3 ? "text-rose-400 font-bold text-xs animate-pulse block" : "text-emerald-400 text-xs font-bold block"}>
-              {telemetry.daysOfFeed <= 3 ? "🚨 Restock Required Immediately" : "Biosecurity Runway Healthy"}
+              {telemetry.daysOfFeed === Infinity 
+                ? "No active flocks consuming feed"
+                : telemetry.daysOfFeed <= 3 
+                  ? "🚨 Restock Required Immediately" 
+                  : "Biosecurity Runway Healthy"}
             </span>
             <p className="text-[10px] text-slate-400 font-mono">
               {telemetry.totalStoredFeedKg.toLocaleString()} kg stored ÷ {Math.round(telemetry.dailyNeed).toLocaleString()} kg/day burn
@@ -274,7 +278,7 @@ function FeedInventoryContent() {
           </CardHeader>
           <CardContent>
             <p className="text-xs text-slate-400 font-mono">
-              Based on {totalLiveBirds > 0 ? totalLiveBirds.toLocaleString() : '5,000 (est.)'} active birds
+              Based on {totalLiveBirds.toLocaleString()} active birds
             </p>
           </CardContent>
         </Card>

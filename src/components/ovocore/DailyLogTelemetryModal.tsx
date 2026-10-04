@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   Card,
   CardContent,
@@ -65,11 +66,15 @@ interface DiagnosticResult {
   message: string;
 }
 
-export default function OvoCoreFlockLogging() {
-  const params = useParams();
-  const farmId = params?.farmId as string;
-  const houseId = params?.houseId as string;
-  const flockId = params?.flockId as string;
+export interface DailyLogTelemetryModalProps {
+  farmId: string;
+  houseId: string;
+  flockId: string;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function DailyLogTelemetryModal({ farmId, houseId, flockId, isOpen, onClose }: DailyLogTelemetryModalProps) {
 
   const { toast } = useToast();
 
@@ -406,14 +411,14 @@ export default function OvoCoreFlockLogging() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 space-y-8 max-w-7xl">
+    <Dialog open={isOpen} onOpenChange={(val) => !val && onClose()}>
+      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto p-0 bg-background border-border rounded-3xl custom-scrollbar">
+        <div className="container mx-auto px-4 py-8 space-y-8 max-w-7xl">
       {/* 1. Header & Live Status */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-border/80 bg-card p-6 rounded-3xl shadow-sm">
         <div className="flex items-start gap-4">
-          <Button variant="ghost" size="icon" asChild className="rounded-xl h-10 w-10 mt-1">
-            <Link href={`/projects/21-ovocore/farm/${farmId}`}>
-              <ArrowLeft className="h-5 w-5" />
-            </Link>
+          <Button variant="ghost" size="icon" onClick={onClose} className="rounded-xl h-10 w-10 mt-1">
+            <ArrowLeft className="h-5 w-5" />
           </Button>
           <div className="space-y-1">
             <div className="flex items-center gap-3">
@@ -451,17 +456,28 @@ export default function OvoCoreFlockLogging() {
         </div>
       </div>
 
-      {flock && (
-        <>
-          <FlockOperationsTracker
-            placementDate={flock.dateHoused.toDate ? flock.dateHoused.toDate().toISOString() : new Date(flock.dateHoused as any).toISOString()}
-            flockType={flock.breed.toLowerCase().includes('layer') ? 'Layers' : 'Broilers'}
-          />
-          <OperationalAlertWidget 
-            placementDate={flock.dateHoused.toDate ? flock.dateHoused.toDate().toISOString() : new Date(flock.dateHoused as any).toISOString()} 
-          />
-        </>
-      )}
+      {flock && (() => {
+        const breedStr = (flock.breed || '').toLowerCase();
+        const catStr = (flock.category || '').toLowerCase();
+        let derivedFlockType = 'Layers';
+        if (breedStr.includes('breeder') || catStr.includes('breeder')) derivedFlockType = 'Breeders';
+        else if (breedStr.includes('kienyeji') || breedStr.includes('kari') || breedStr.includes('kenbro') || catStr.includes('kienyeji')) derivedFlockType = 'Kienyeji';
+        else if (breedStr.includes('broiler') || catStr.includes('broiler')) derivedFlockType = 'Broilers';
+
+        return (
+          <>
+            <FlockOperationsTracker
+              placementDate={flock.dateHoused.toDate ? flock.dateHoused.toDate().toISOString() : new Date(flock.dateHoused as any).toISOString()}
+              flockType={derivedFlockType}
+              initialAgeDays={(flock.initialAgeWeeks || 0) * 7}
+            />
+            <OperationalAlertWidget 
+              placementDate={flock.dateHoused.toDate ? flock.dateHoused.toDate().toISOString() : new Date(flock.dateHoused as any).toISOString()} 
+              flockType={derivedFlockType}
+            />
+          </>
+        );
+      })()}
 
       {flock?.status === 'quarantine_alert' && (
         <div className="bg-rose-600 text-white p-4 rounded-2xl shadow-lg shadow-rose-500/20 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -853,6 +869,8 @@ export default function OvoCoreFlockLogging() {
           </Card>
         </div>
       </div>
-    </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -252,6 +252,45 @@ export function AddEggSaleModal({ farmId, isOpen, onClose, trigger, onSuccess }:
       return;
     }
 
+    const totalFarmEggs = houses.reduce((sum, h) => sum + (h.availableEggs || 0), 0);
+    const isGeneral = formData.targetAllocation === 'general_stock';
+
+    if (isGeneral) {
+      if (totalFarmEggs === 0) {
+        toast({
+          variant: "destructive",
+          title: "No Eggs Available",
+          description: "No eggs have been recorded farm-wide. Please log daily production first."
+        });
+        return;
+      }
+      if (calculatedTotals.totalEggs > totalFarmEggs) {
+        toast({
+          variant: "destructive",
+          title: "Insufficient Eggs",
+          description: `Cannot sell ${calculatedTotals.totalEggs} eggs. Only ${totalFarmEggs} eggs have been recorded farm-wide.`
+        });
+        return;
+      }
+    } else if (selectedUnit) {
+      if (selectedUnit.availableEggs === 0) {
+        toast({
+          variant: "destructive",
+          title: "No Eggs Available",
+          description: `No eggs have been recorded for ${selectedUnit.houseName}. Please log daily production first.`
+        });
+        return;
+      }
+      if (calculatedTotals.totalEggs > selectedUnit.availableEggs) {
+        toast({
+          variant: "destructive",
+          title: "Insufficient Eggs",
+          description: `Cannot sell ${calculatedTotals.totalEggs} eggs. Only ${selectedUnit.availableEggs} eggs have been recorded for ${selectedUnit.houseName}.`
+        });
+        return;
+      }
+    }
+
     setIsSubmitting(true);
     try {
       const isGeneral = formData.targetAllocation === 'general_stock';

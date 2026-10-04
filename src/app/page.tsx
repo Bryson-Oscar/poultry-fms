@@ -415,7 +415,7 @@ function formatLastActive(timestamp: any): string {
         {/* Banner Section */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-600 via-amber-700 to-slate-900 p-6 sm:p-8 shadow-2xl border border-amber-500/20">
           <div className="relative z-10 max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-mono font-semibold backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-mono font-semibold ">
               <Sparkles className="w-3.5 h-3.5" /> OvoCore Multi-Enterprise Engine
             </div>
             <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
@@ -448,7 +448,7 @@ function formatLastActive(timestamp: any): string {
                   onClick={handleSeedDemo}
                   disabled={isProcessingDemo}
                   variant="secondary"
-                  className="bg-slate-900/80 hover:bg-slate-900 text-amber-400 border border-amber-500/30 font-bold rounded-xl h-11 px-5"
+                  className="bg-card hover:bg-slate-900 text-amber-400 border border-amber-500/30 font-bold rounded-xl h-11 px-5"
                 >
                   {isProcessingDemo ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2" />}
                   Seed Demo Farm (Kuku Bora)
@@ -460,7 +460,7 @@ function formatLastActive(timestamp: any): string {
 
         {/* Quick Access & Search Bar */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="md:col-span-2 bg-slate-900/90 border-slate-800 text-white shadow-xl">
+          <Card className="md:col-span-2 bg-card border-slate-800 text-white shadow-xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-bold flex items-center gap-2">
                 <Search className="w-4 h-4 text-amber-400" /> Filter & Search Farms
@@ -536,7 +536,7 @@ function formatLastActive(timestamp: any): string {
             </CardContent>
           </Card>
 
-          <Card className="bg-slate-900/90 border-slate-800 text-white shadow-xl">
+          <Card className="bg-card border-slate-800 text-white shadow-xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-bold flex items-center gap-2">
                 <Lock className="w-4 h-4 text-amber-400" /> Quick Access Gate

@@ -57,3 +57,64 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+/* ==========================================================================
+   Blue Motion Ambient Background Overlay
+   ========================================================================== */
+
+.blue-motion-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.75;
+}
+
+/* Extracted from .glow and .glow-gradient--medium specifications */
+.motion-glow-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 740px;
+  height: 740px;
+  background: radial-gradient(circle, rgba(14, 116, 244, 0.35) 0%, rgba(14, 165, 233, 0.15) 45%, transparent 70%);
+  filter: blur(80px);
+  opacity: 0.85;
+  animation: bluePulseMotion 8s ease-in-out infinite alternate;
+}
+
+/* Secondary drifting ambient blue motion particle */
+.motion-glow-drift {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
+  filter: blur(60px);
+  top: 20%;
+  right: 15%;
+  animation: blueDriftMotion 12s ease-in-out infinite alternate;
+}
+
+@keyframes bluePulseMotion {
+  0% {
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 0.95;
+  }
+}
+
+@keyframes blueDriftMotion {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  100% {
+    transform: translateY(-40px) translateX(-30px);
+  }
+}

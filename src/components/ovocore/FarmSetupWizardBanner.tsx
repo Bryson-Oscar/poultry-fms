@@ -63,7 +63,30 @@ export function FarmSetupWizardBanner({
   const progressPct = Math.round((completedStepsCount / totalSteps) * 100);
   const isFullyConfigured = progressPct === 100;
 
+  const [isMinimized, setIsMinimized] = useState(isFullyConfigured);
+
+  React.useEffect(() => {
+    if (isFullyConfigured) {
+      setIsMinimized(true);
+    }
+  }, [isFullyConfigured]);
+
   if (isDismissed) return null;
+
+  if (isFullyConfigured && isMinimized) {
+    return (
+      <div className="fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <button
+          onClick={() => setIsMinimized(false)}
+          className="group relative flex items-center justify-center p-4 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 text-white shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:scale-110 hover:shadow-[0_0_50px_rgba(16,185,129,0.6)] transition-all"
+          title="Farm is 100% Configured - Click for Status"
+        >
+          <div className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-30 group-hover:opacity-50" />
+          <ShieldCheck className="w-7 h-7 relative z-10" />
+        </button>
+      </div>
+    );
+  }
 
   return (
     <Card className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/40 border border-amber-500/30 text-white shadow-2xl transition-all">
@@ -98,11 +121,22 @@ export function FarmSetupWizardBanner({
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="text-right hidden sm:block">
+          <div className="flex items-center gap-2">
+            <div className="text-right hidden sm:block mr-2">
               <span className="text-2xl font-black text-amber-400 font-mono">{progressPct}%</span>
               <span className="block text-[10px] text-slate-400 uppercase font-mono tracking-wider">Completed</span>
             </div>
+            
+            {isFullyConfigured && (
+              <button
+                onClick={() => setIsMinimized(true)}
+                className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors"
+                title="Minimize to badge"
+              >
+                <ChevronRight className="w-5 h-5 rotate-90" />
+              </button>
+            )}
+            
             <button
               onClick={() => setIsDismissed(true)}
               className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors"
@@ -123,7 +157,7 @@ export function FarmSetupWizardBanner({
           
           {/* Step 1: Farm Registered */}
           <div className={`p-4 rounded-2xl border transition-all flex flex-col justify-between ${
-            isProfileComplete ? 'bg-slate-950/80 border-emerald-500/30 text-slate-200' : 'bg-slate-950/50 border-slate-800'
+            isProfileComplete ? 'bg-background border-emerald-500/30 text-slate-200' : 'bg-slate-950/50 border-slate-800'
           }`}>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -142,7 +176,7 @@ export function FarmSetupWizardBanner({
 
           {/* Step 2: Add Production Shed */}
           <div className={`p-4 rounded-2xl border transition-all flex flex-col justify-between ${
-            isHouseComplete ? 'bg-slate-950/80 border-emerald-500/30 text-slate-200' : 'bg-slate-950/90 border-amber-500/40 shadow-lg'
+            isHouseComplete ? 'bg-background border-emerald-500/30 text-slate-200' : 'bg-slate-950/90 border-amber-500/40 shadow-lg'
           }`}>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -178,7 +212,7 @@ export function FarmSetupWizardBanner({
 
           {/* Step 3: Stock Flock Batch */}
           <div className={`p-4 rounded-2xl border transition-all flex flex-col justify-between ${
-            isFlockComplete ? 'bg-slate-950/80 border-emerald-500/30 text-slate-200' : 'bg-slate-950/90 border-amber-500/40 shadow-lg'
+            isFlockComplete ? 'bg-background border-emerald-500/30 text-slate-200' : 'bg-slate-950/90 border-amber-500/40 shadow-lg'
           }`}>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -215,7 +249,7 @@ export function FarmSetupWizardBanner({
 
           {/* Step 4: Add Feed Rations */}
           <div className={`p-4 rounded-2xl border transition-all flex flex-col justify-between ${
-            isFeedComplete ? 'bg-slate-950/80 border-emerald-500/30 text-slate-200' : 'bg-slate-950/90 border-amber-500/40 shadow-lg'
+            isFeedComplete ? 'bg-background border-emerald-500/30 text-slate-200' : 'bg-slate-950/90 border-amber-500/40 shadow-lg'
           }`}>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
